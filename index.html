@@ -168,6 +168,127 @@
     
     
     <div class="col-12 col-md-12 mx-auto index-info">
+      <a class="index-header" href="/2020/10/09/linux/">linux programing</a>
+
+      <a href="/2020/10/09/linux/" class="index-excerpt">
+        
+        
+          
+        
+        <div> Interaction With the Execution environment
+ Using getopt_long
+#include &lt;getopt.h&gt;
+for example:
+$ program -h -v -o name
+const char* const short_options = &quot;ho:v&quot;;
+:indicate a argument f</div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>&nbsp;2020-10-09
+          </div>
+        
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/linux/">linux</a>
+            
+          </div>
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <div class="col-12 col-md-12 mx-auto index-info">
+      <a class="index-header" href="/2020/08/19/raft/">raft implement notice</a>
+
+      <a href="/2020/08/19/raft/" class="index-excerpt">
+        
+        
+          
+        
+        <div>
+server should convert to follower and set currentTerm to be args's Term, when receive a RPC message
+when a follower is disconnected from cluster, connecting back later, it’s term is large than the ot</div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>&nbsp;2020-08-19
+          </div>
+        
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/distributed-raft/">distributed raft</a>
+            
+          </div>
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <div class="col-12 col-md-12 mx-auto index-info">
+      <a class="index-header" href="/2020/08/06/PE%20%E5%AF%BC%E5%85%A5%E8%A1%A8%E6%B3%A8%E5%85%A5/">PE import table inject</a>
+
+      <a href="/2020/08/06/PE%20%E5%AF%BC%E5%85%A5%E8%A1%A8%E6%B3%A8%E5%85%A5/" class="index-excerpt">
+        
+        
+          
+        
+        <div>导入表描述了exe执行时需要加载的dll
+ create a test dll
+
+init() 和 destory()分别在dll加载和dll卸载时调用
+
+
+dll必须提供导出函数才会被加载
+ 导入表结构
+
+表中地址均为RVA
+ inject code
+ read file
+
+DWORD ext_size = 0x1000; // 文件扩大的大小
+FILE* g_f = fopen(filenam</div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>&nbsp;2020-08-06
+          </div>
+        
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/PE/">PE</a>
+            
+          </div>
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <div class="col-12 col-md-12 mx-auto index-info">
       <a class="index-header" href="/2020/07/05/code%20template/">algorithm template</a>
 
       <a href="/2020/07/05/code%20template/" class="index-excerpt">
@@ -175,15 +296,19 @@
         
           
         
-        <div>模板题0x00排序快速排序给定你一个长度为n的整数数列。
+        <div> 模板题
+ 0x00排序
+ 快速排序
+给定你一个长度为n的整数数列。
 请你使用快速排序对这个数列按照从小到大进行排序。
 并将排好序的数列按顺序输出。
-输入格式输入共两行，第一行包含整数 n。
-第二行包含 n 个整数（所有整数均在$1-10^{9}$范围内），表示整个数列。
-输出格式输出共一行，包含 n 个整数，表示排好序的数列。
-数据范围$1≤n≤100000m$
-输入样例53 1 2 4 5
-输出样例1 2</div>
+ 输入格式
+输入共两行，第一行包含整数 n。
+第二行包含 n 个整数（所有整数均在1−1091-10^{9}1−109范围内），表示整个数列。
+ 输出格式
+输出共一行，包含 n 个整数，表示排好序的数列。
+ 数据范围
+1≤n≤1000001≤n≤10</div>
       </a>
 
       <div class="index-btm post-metas">
@@ -210,7 +335,7 @@
           
         
         <div>Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub.
-Quick</div>
+ Quic</div>
       </a>
 
       <div class="index-btm post-metas">

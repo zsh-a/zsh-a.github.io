@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  <title>linux programing - Hexo</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/github-gist.min.css" />
+  
+
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_yg9cfy8wd6.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_pjno9b9zyxs.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script  src="/js/utils.js" ></script>
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Fluid</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                Home
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                Archives
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                Categories
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                Tags
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                About
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner intro-2" id="background" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container text-center white-text fade-in-up">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              
+  <div class="mt-3 post-meta">
+    <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+    <time datetime="2020-10-09 12:07">
+      October 9, 2020 pm
+    </time>
+  </div>
+
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      1.3k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      26
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <div class="post-content mx-auto" id="post">
+            
+            <article class="markdown-body">
+              <h1 id="interaction-with-the-execution-environment"><a class="markdownIt-Anchor" href="#interaction-with-the-execution-environment"></a> Interaction With the Execution environment</h1>
+<h2 id="using-getopt_long"><a class="markdownIt-Anchor" href="#using-getopt_long"></a> Using getopt_long</h2>
+<p><code>#include &lt;getopt.h&gt;</code><br />
+for example:<br />
+<code>$ program -h -v -o name</code></p>
+<p><code>const char* const short_options = &quot;ho:v&quot;;</code><br />
+<code>:</code>indicate a argument followed</p>
+<pre><code class="hljs c"><span class="hljs-keyword">const</span> <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">option</span> <span class="hljs-title">long_options</span>[] = &#123;</span>
+    <span class="hljs-comment">// long option,has argument,NULL,short option</span>
+	&#123; <span class="hljs-string">"help"</span>, <span class="hljs-number">0</span>, <span class="hljs-literal">NULL</span>, <span class="hljs-string">'h'</span> &#125;,
+	&#123; <span class="hljs-string">"output"</span>, <span class="hljs-number">1</span>, <span class="hljs-literal">NULL</span>, <span class="hljs-string">'0'</span> &#125;,
+	&#123; <span class="hljs-string">"verbose"</span>, <span class="hljs-number">0</span>, <span class="hljs-literal">NULL</span>, <span class="hljs-string">'v'</span> &#125;,
+	&#123; <span class="hljs-literal">NULL</span>, <span class="hljs-number">0</span>, <span class="hljs-literal">NULL</span>, <span class="hljs-number">0</span> &#125;
+    <span class="hljs-comment">// ended with 0</span>
+&#125;;</code></pre>
+<pre><code class="hljs c"><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;getopt.h&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;stdio.h&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;stdlib.h&gt;</span></span>
+<span class="hljs-comment">/* The name of this program. */</span>
+<span class="hljs-keyword">const</span> <span class="hljs-keyword">char</span>* program_name;
+<span class="hljs-comment">/* Prints usage information for this program to STREAM (typically</span>
+<span class="hljs-comment">stdout or stderr), and exit the program with EXIT_CODE. Does not</span>
+<span class="hljs-comment">return. */</span>
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">print_usage</span> <span class="hljs-params">(FILE* stream, <span class="hljs-keyword">int</span> exit_code)</span></span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-built_in">fprintf</span> (stream, <span class="hljs-string">"Usage: %s options [ inputfile ... ]\n"</span>, program_name);
+    <span class="hljs-built_in">fprintf</span> (stream,
+    <span class="hljs-string">" -h --help Display this usage information.\n"</span>
+    <span class="hljs-string">" -o --output filename Write output to file.\n"</span>
+    <span class="hljs-string">" -v --verbose Print verbose messages.\n"</span>);
+    <span class="hljs-built_in">exit</span> (exit_code);
+&#125;
+<span class="hljs-comment">/* Main program entry point. ARGC contains number of argument list</span>
+<span class="hljs-comment">elements; ARGV is an array of pointers to them. */</span>
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span> <span class="hljs-params">(<span class="hljs-keyword">int</span> argc, <span class="hljs-keyword">char</span>* argv[])</span></span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-keyword">int</span> next_option;
+    <span class="hljs-comment">/* A string listing valid short options letters. */</span>
+    <span class="hljs-keyword">const</span> <span class="hljs-keyword">char</span>* <span class="hljs-keyword">const</span> short_options = <span class="hljs-string">"ho:v"</span>;
+    <span class="hljs-comment">/* An array describing valid long options. */</span>
+    <span class="hljs-keyword">const</span> <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">option</span> <span class="hljs-title">long_options</span>[] = &#123;</span>
+    	<span class="hljs-comment">// long option,has argument,NULL,short option</span>
+		&#123; <span class="hljs-string">"help"</span>, <span class="hljs-number">0</span>, <span class="hljs-literal">NULL</span>, <span class="hljs-string">'h'</span> &#125;,
+		&#123; <span class="hljs-string">"output"</span>, <span class="hljs-number">1</span>, <span class="hljs-literal">NULL</span>, <span class="hljs-string">'0'</span> &#125;,
+		&#123; <span class="hljs-string">"verbose"</span>, <span class="hljs-number">0</span>, <span class="hljs-literal">NULL</span>, <span class="hljs-string">'v'</span> &#125;,
+		&#123; <span class="hljs-literal">NULL</span>, <span class="hljs-number">0</span>, <span class="hljs-literal">NULL</span>, <span class="hljs-number">0</span> &#125;
+	&#125;;
+    <span class="hljs-comment">// ended with 0</span>
+
+    <span class="hljs-comment">/* The name of the file to receive program output, or NULL for</span>
+<span class="hljs-comment">    standard output. */</span>
+    <span class="hljs-keyword">const</span> <span class="hljs-keyword">char</span>* output_filename = <span class="hljs-literal">NULL</span>;
+    <span class="hljs-comment">/* Whether to display verbose messages. */</span>
+    <span class="hljs-keyword">int</span> verbose = <span class="hljs-number">0</span>;
+    <span class="hljs-comment">/* Remember the name of the program, to incorporate in messages.</span>
+<span class="hljs-comment">    The name is stored in argv[0]. */</span>
+    program_name = argv[<span class="hljs-number">0</span>];
+    <span class="hljs-keyword">do</span> &#123;
+        next_option = getopt_long (argc, argv, short_options,
+        long_options, <span class="hljs-literal">NULL</span>);
+        <span class="hljs-keyword">switch</span> (next_option)
+        &#123;
+        <span class="hljs-keyword">case</span> <span class="hljs-string">'h'</span>: <span class="hljs-comment">/* -h or --help */</span>
+            <span class="hljs-comment">/* User has requested usage information. Print it to standard</span>
+<span class="hljs-comment">            output, and exit with exit code zero (normal termination). */</span>
+            print_usage (<span class="hljs-built_in">stdout</span>, <span class="hljs-number">0</span>);
+        <span class="hljs-keyword">case</span> <span class="hljs-string">'o'</span>: <span class="hljs-comment">/* -o or --output */</span>
+            <span class="hljs-comment">/* This option takes an argument, the name of the output file. */</span>
+            output_filename = optarg;
+            <span class="hljs-keyword">break</span>;
+        <span class="hljs-keyword">case</span> <span class="hljs-string">'v'</span>: <span class="hljs-comment">/* -v or --verbose */</span>
+            verbose = <span class="hljs-number">1</span>;
+            <span class="hljs-keyword">break</span>;
+        <span class="hljs-keyword">case</span> <span class="hljs-string">'?'</span>: <span class="hljs-comment">/* The user specified an invalid option. */</span>
+            <span class="hljs-comment">/* Print usage information to standard error, and exit with exit</span>
+<span class="hljs-comment">            code one (indicating abnormal termination). */</span>
+            print_usage (<span class="hljs-built_in">stderr</span>, <span class="hljs-number">1</span>);
+        <span class="hljs-keyword">case</span> <span class="hljs-number">-1</span>: <span class="hljs-comment">/* Done with options. */</span>
+            <span class="hljs-keyword">break</span>;
+            <span class="hljs-keyword">default</span>: <span class="hljs-comment">/* Something else: unexpected. */</span>
+            <span class="hljs-built_in">abort</span> ();
+        &#125;
+    &#125;
+    <span class="hljs-keyword">while</span> (next_option != <span class="hljs-number">-1</span>);
+    <span class="hljs-comment">/* Done with options. OPTIND points to first nonoption argument.</span>
+<span class="hljs-comment">    For demonstration purposes, print them if the verbose option was</span>
+<span class="hljs-comment">    specified. */</span>
+&#125;;</code></pre>
+<h2 id="standard-io"><a class="markdownIt-Anchor" href="#standard-io"></a> Standard I/O</h2>
+<ul>
+<li><code>stdin</code></li>
+<li><code>stdout</code> default line buffered</li>
+<li><code>stderr</code> default no buffered</li>
+</ul>
+<p><code>fprint(stderr,msg)</code></p>
+<p><code>$ program &gt; output_file.txt 2&gt;&amp;1</code><br />
+<code>$ program 2&gt;&amp;1 | filter</code><br />
+<code>2&gt;&amp;1</code> indicate fd <strong>2</strong>(<code>stderr</code>) merged into fd <strong>1</strong>(<code>stdout</code>)</p>
+<h2 id="the-environment"><a class="markdownIt-Anchor" href="#the-environment"></a> The Environment</h2>
+<ul>
+<li>access environment variable value using <code>$varname</code>.<br />
+<code>$ echo $HOME</code><br />
+<code>$ echo $PATH</code></li>
+<li>export variable<br />
+<code>$ export HOME=&quot;/bin&quot;</code></li>
+<li>functions in <code>&lt;stdlib.h&gt;</code><br />
+<code>char *getenv (const char *__name)</code><br />
+<code>int setenv (const char *__name, const char *__value, int __replace)</code></li>
+</ul>
+<h1 id="ipc"><a class="markdownIt-Anchor" href="#ipc"></a> IPC</h1>
+<h2 id="pipe"><a class="markdownIt-Anchor" href="#pipe"></a> Pipe</h2>
+<p><code>pipe(int* fds)</code> create a pipe, fds[0] is read end, dfs[1] is write end.<br />
+<code>int dup2(int oldfd, int newfd)</code>, newfd equated file with oldfd</p>
+<h3 id="pipe-redirect"><a class="markdownIt-Anchor" href="#pipe-redirect"></a> pipe redirect</h3>
+<pre><code class="hljs c"><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;stdio.h&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span><span class="hljs-meta-string">&lt;unistd.h&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span><span class="hljs-meta-string">&lt;sys/types.h&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span><span class="hljs-meta-string">&lt;sys/wait.h&gt;</span></span>
+
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-keyword">int</span> fds[<span class="hljs-number">2</span>];
+    <span class="hljs-keyword">pid_t</span> pid;
+    pipe(fds);
+
+    pid = fork();
+    <span class="hljs-keyword">if</span>(pid == <span class="hljs-number">0</span>)&#123;
+        <span class="hljs-comment">// child</span>
+        <span class="hljs-built_in">close</span>(fds[<span class="hljs-number">1</span>]);
+        dup2(fds[<span class="hljs-number">0</span>],STDIN_FILENO); <span class="hljs-comment">// read from `stdin` as same as pipe</span>
+        execlp(<span class="hljs-string">"sort"</span>,<span class="hljs-string">"sort"</span>,<span class="hljs-number">0</span>);
+    &#125;<span class="hljs-keyword">else</span>&#123;
+        FILE* stream = fdopen(fds[<span class="hljs-number">1</span>],<span class="hljs-string">"w"</span>);
+        <span class="hljs-built_in">fprintf</span>(stream,<span class="hljs-string">"This is a test.\n"</span>);
+        <span class="hljs-built_in">fprintf</span>(stream,<span class="hljs-string">"This is a test.\n"</span>);
+        <span class="hljs-built_in">fprintf</span>(stream,<span class="hljs-string">"Hello world\n"</span>);
+        <span class="hljs-built_in">fprintf</span>(stream,<span class="hljs-string">"My dog\n"</span>);
+        <span class="hljs-built_in">fprintf</span>(stream,<span class="hljs-string">"This prog\n"</span>);
+        <span class="hljs-built_in">fprintf</span>(stream,<span class="hljs-string">"One fish.\n"</span>);
+        fflush(stream);
+        <span class="hljs-built_in">close</span>(fds[<span class="hljs-number">1</span>]);
+        waitpid(pid,<span class="hljs-literal">NULL</span>,<span class="hljs-number">0</span>);
+    &#125;
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+&#125;</code></pre>
+<h2 id="socket"><a class="markdownIt-Anchor" href="#socket"></a> Socket</h2>
+<h3 id="local-sockets"><a class="markdownIt-Anchor" href="#local-sockets"></a> Local Sockets</h3>
+<p>server.c</p>
+<pre><code class="hljs c"><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;stdio.h&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;stdlib.h&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;string.h&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;sys/socket.h&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;sys/un.h&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;unistd.h&gt;</span></span>
+<span class="hljs-comment">/* Read text from the socket and print it out. Continue until the</span>
+<span class="hljs-comment">socket closes. Return nonzero if the client sent a “quit”</span>
+<span class="hljs-comment">message, zero otherwise. */</span>
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">server</span> <span class="hljs-params">(<span class="hljs-keyword">int</span> client_socket)</span></span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-keyword">while</span> (<span class="hljs-number">1</span>) &#123;
+        <span class="hljs-keyword">int</span> length;
+        <span class="hljs-keyword">char</span>* <span class="hljs-built_in">text</span>;
+        <span class="hljs-comment">/* First, read the length of the text message from the socket. If</span>
+<span class="hljs-comment">        read returns zero, the client closed the connection. */</span>
+        <span class="hljs-keyword">if</span> (<span class="hljs-built_in">read</span> (client_socket, &amp;length, <span class="hljs-keyword">sizeof</span> (length)) == <span class="hljs-number">0</span>)
+            <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+        <span class="hljs-comment">/* Allocate a buffer to hold the text. */</span>
+        <span class="hljs-built_in">text</span> = (<span class="hljs-keyword">char</span>*) <span class="hljs-built_in">malloc</span> (length);
+        <span class="hljs-comment">/* Read the text itself, and print it. */</span>
+        <span class="hljs-built_in">read</span> (client_socket, <span class="hljs-built_in">text</span>, length);
+        <span class="hljs-built_in">printf</span> (“%s\n”, <span class="hljs-built_in">text</span>);
+        <span class="hljs-comment">/* Free the buffer. */</span>
+        <span class="hljs-built_in">free</span> (<span class="hljs-built_in">text</span>);
+        <span class="hljs-comment">/* If the client sent the message “quit,” we’re all done. */</span>
+        <span class="hljs-keyword">if</span> (!<span class="hljs-built_in">strcmp</span> (<span class="hljs-built_in">text</span>, “quit”))
+            <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;
+    &#125;
+&#125;
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span> <span class="hljs-params">(<span class="hljs-keyword">int</span> argc, <span class="hljs-keyword">char</span>* <span class="hljs-keyword">const</span> argv[])</span></span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-keyword">const</span> <span class="hljs-keyword">char</span>* <span class="hljs-keyword">const</span> socket_name = argv[<span class="hljs-number">1</span>];
+    <span class="hljs-keyword">int</span> socket_fd;
+    <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">sockaddr_un</span> <span class="hljs-title">name</span>;</span>
+    <span class="hljs-keyword">int</span> client_sent_quit_message;
+    <span class="hljs-comment">/* Create the socket. */</span>
+    socket_fd = socket (PF_LOCAL, SOCK_STREAM, <span class="hljs-number">0</span>);
+    <span class="hljs-comment">// `PF_LOCAL` local namespace</span>
+    <span class="hljs-comment">/* Indicate that this is a server. */</span>
+    name.sun_family = AF_LOCAL;
+    <span class="hljs-built_in">strcpy</span> (name.sun_path, socket_name);
+    bind (socket_fd, &amp;name, SUN_LEN (&amp;name));
+    <span class="hljs-comment">/* Listen for connections. */</span>
+    <span class="hljs-built_in">listen</span> (socket_fd, <span class="hljs-number">5</span>);
+    <span class="hljs-comment">/* Repeatedly accept connections, spinning off one server() to deal</span>
+<span class="hljs-comment">    with each client. Continue until a client sends a “quit” message. */</span>
+    <span class="hljs-keyword">do</span> &#123;
+        <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">sockaddr_un</span> <span class="hljs-title">client_name</span>;</span>
+        <span class="hljs-keyword">socklen_t</span> client_name_len;
+        <span class="hljs-keyword">int</span> client_socket_fd;
+        <span class="hljs-comment">/* Accept a connection. */</span>
+        client_socket_fd = accept (socket_fd, &amp;client_name, &amp;client_name_len);
+        <span class="hljs-comment">/* Handle the connection. */</span>
+        client_sent_quit_message = server (client_socket_fd);
+        <span class="hljs-comment">/* Close our end of the connection. */</span>
+        <span class="hljs-built_in">close</span> (client_socket_fd);
+    &#125;
+    <span class="hljs-keyword">while</span> (!client_sent_quit_message);
+    <span class="hljs-comment">/* Remove the socket file. */</span>
+    <span class="hljs-built_in">close</span> (socket_fd);
+    unlink (socket_name);
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+&#125;</code></pre>
+<p>client.c</p>
+<pre><code class="hljs c"><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;stdio.h&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;stdlib.h&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;string.h&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;sys/socket.h&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;sys/un.h&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;unistd.h&gt;</span></span>
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">write_text</span> <span class="hljs-params">(<span class="hljs-keyword">int</span> socket_fd, <span class="hljs-keyword">const</span> <span class="hljs-keyword">char</span>* <span class="hljs-built_in">text</span>)</span></span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-comment">/* Write the number of bytes in the string, including</span>
+<span class="hljs-comment">    NUL-termination. */</span>
+    <span class="hljs-keyword">int</span> length = <span class="hljs-built_in">strlen</span> (<span class="hljs-built_in">text</span>) + <span class="hljs-number">1</span>;
+    <span class="hljs-built_in">write</span> (socket_fd, &amp;length, <span class="hljs-keyword">sizeof</span> (length));
+    <span class="hljs-comment">/* Write the string. */</span>
+    <span class="hljs-built_in">write</span> (socket_fd, <span class="hljs-built_in">text</span>, length);
+&#125;
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span> <span class="hljs-params">(<span class="hljs-keyword">int</span> argc, <span class="hljs-keyword">char</span>* <span class="hljs-keyword">const</span> argv[])</span></span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-keyword">const</span> <span class="hljs-keyword">char</span>* <span class="hljs-keyword">const</span> socket_name = argv[<span class="hljs-number">1</span>];
+    <span class="hljs-keyword">const</span> <span class="hljs-keyword">char</span>* <span class="hljs-keyword">const</span> message = argv[<span class="hljs-number">2</span>];
+    <span class="hljs-keyword">int</span> socket_fd;
+    <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">sockaddr_un</span> <span class="hljs-title">name</span>;</span>
+    <span class="hljs-comment">/* Create the socket. */</span>
+    socket_fd = socket (PF_LOCAL, SOCK_STREAM, <span class="hljs-number">0</span>);
+    <span class="hljs-comment">/* Store the server’s name in the socket address. */</span>
+    name.sun_family = AF_LOCAL;
+    <span class="hljs-built_in">strcpy</span> (name.sun_path, socket_name);
+    <span class="hljs-comment">/* Connect the socket. */</span>
+    <span class="hljs-built_in">connect</span> (socket_fd, &amp;name, SUN_LEN (&amp;name));
+    <span class="hljs-comment">/* Write the text on the command line to the socket. */</span>
+    write_text (socket_fd, message);
+    <span class="hljs-built_in">close</span> (socket_fd);
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+&#125;</code></pre>
+<h3 id="internet-domain-sockets"><a class="markdownIt-Anchor" href="#internet-domain-sockets"></a> Internet-Domain Sockets</h3>
+<pre><code class="hljs c"><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;stdlib.h&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;stdio.h&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;netinet/in.h&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;netdb.h&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;sys/socket.h&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;unistd.h&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;string.h&gt;</span></span>
+<span class="hljs-comment">/* Print the contents of the home page for the server’s socket.</span>
+<span class="hljs-comment">Return an indication of success. */</span>
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">get_home_page</span> <span class="hljs-params">(<span class="hljs-keyword">int</span> socket_fd)</span></span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-keyword">char</span> <span class="hljs-built_in">buffer</span>[<span class="hljs-number">10000</span>];
+    <span class="hljs-keyword">ssize_t</span> number_characters_read;
+    <span class="hljs-comment">/* Send the HTTP GET command for the home page. */</span>
+    <span class="hljs-built_in">sprintf</span> (<span class="hljs-built_in">buffer</span>, “GET /\n”);
+    <span class="hljs-built_in">write</span> (socket_fd, <span class="hljs-built_in">buffer</span>, <span class="hljs-built_in">strlen</span> (<span class="hljs-built_in">buffer</span>));
+    <span class="hljs-comment">/* Read from the socket. The call to read may not</span>
+<span class="hljs-comment">    return all the data at one time, so keep</span>
+<span class="hljs-comment">    trying until we run out. */</span>
+    <span class="hljs-keyword">while</span> (<span class="hljs-number">1</span>) &#123;
+        number_characters_read = <span class="hljs-built_in">read</span> (socket_fd, <span class="hljs-built_in">buffer</span>, <span class="hljs-number">10000</span>);
+        <span class="hljs-keyword">if</span> (number_characters_read == <span class="hljs-number">0</span>)
+            <span class="hljs-keyword">return</span>;
+        <span class="hljs-comment">/* Write the data to standard output. */</span>
+        fwrite (<span class="hljs-built_in">buffer</span>, <span class="hljs-keyword">sizeof</span> (<span class="hljs-keyword">char</span>), number_characters_read, <span class="hljs-built_in">stdout</span>);
+    &#125;
+&#125;
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span> <span class="hljs-params">(<span class="hljs-keyword">int</span> argc, <span class="hljs-keyword">char</span>* <span class="hljs-keyword">const</span> argv[])</span></span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-keyword">int</span> socket_fd;
+    <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">sockaddr_in</span> <span class="hljs-title">name</span>;</span>
+    <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">hostent</span>* <span class="hljs-title">hostinfo</span>;</span>
+    <span class="hljs-comment">/* Create the socket. */</span>
+    socket_fd = socket (PF_INET, SOCK_STREAM, <span class="hljs-number">0</span>);
+    <span class="hljs-comment">/* Store the server’s name in the socket address. */</span>
+    name.sin_family = AF_INET;
+    <span class="hljs-comment">/* Convert from strings to numbers. */</span>
+    hostinfo = gethostbyname (argv[<span class="hljs-number">1</span>]);
+    <span class="hljs-keyword">if</span> (hostinfo == <span class="hljs-literal">NULL</span>)
+        <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;
+    <span class="hljs-keyword">else</span>
+    name.sin_addr = *((struct in_addr *) hostinfo-&gt;h_addr);
+    <span class="hljs-comment">/* Web servers use port 80. */</span>
+    name.sin_port = htons (<span class="hljs-number">80</span>);
+    <span class="hljs-comment">/* Connect to the Web server */</span>
+    <span class="hljs-keyword">if</span> (<span class="hljs-built_in">connect</span> (socket_fd, &amp;name, <span class="hljs-keyword">sizeof</span> (struct sockaddr_in)) == <span class="hljs-number">-1</span>) &#123;
+        perror (“<span class="hljs-built_in">connect</span>”);
+        <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;
+    &#125;
+    <span class="hljs-comment">/* Retrieve the server’s home page. */</span>
+    get_home_page (socket_fd);
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+&#125;</code></pre>
+<h1 id="system-call"><a class="markdownIt-Anchor" href="#system-call"></a> System Call</h1>
+<h2 id="using-strace"><a class="markdownIt-Anchor" href="#using-strace"></a> Using strace</h2>
+<p><code>sudo apt install strace</code></p>
+
+            </article>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/linux/">linux</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" target="_blank" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <div class="post-prev col-6">
+                    
+                    
+                  </div>
+                  <div class="post-next col-6">
+                    
+                    
+                      <a href="/2020/08/19/raft/">
+                        <span class="hidden-mobile">raft implement notice</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </div>
+                </div>
+              
+            </div>
+
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;TOC</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <div>
+      <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener">
+        <span>Fluid</span></a>
+    </div>
+    
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/main.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/lazyload.js" ></script>
+  
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+
+
+
+
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: 'article.markdown-body',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "linux programing&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+  
+
+  
+    <!-- KaTeX -->
+    <link  rel="stylesheet" href="https://cdn.staticfile.org/KaTeX/0.11.1/katex.min.css" />
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

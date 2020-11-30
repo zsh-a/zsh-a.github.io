@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  <title>PE import table inject - Hexo</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/github-gist.min.css" />
+  
+
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_yg9cfy8wd6.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_pjno9b9zyxs.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script  src="/js/utils.js" ></script>
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Fluid</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                Home
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                Archives
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                Categories
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                Tags
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                About
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner intro-2" id="background" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container text-center white-text fade-in-up">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              
+  <div class="mt-3 post-meta">
+    <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+    <time datetime="2020-08-06 21:40">
+      August 6, 2020 pm
+    </time>
+  </div>
+
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      622 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      11
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <div class="post-content mx-auto" id="post">
+            
+            <article class="markdown-body">
+              <p>导入表描述了exe执行时需要加载的dll</p>
+<h2 id="create-a-test-dll"><a class="markdownIt-Anchor" href="#create-a-test-dll"></a> create a test dll</h2>
+<p><img src="/image/PE/dllmain.png" srcset="/img/loading.gif" alt="" /><br />
+<code>init()</code> 和 <code>destory()</code>分别在dll加载和dll卸载时调用<br />
+<img src="/image/PE/import.png" srcset="/img/loading.gif" alt="" /><br />
+<img src="/image/PE/pch.png" srcset="/img/loading.gif" alt="" /><br />
+dll必须提供导出函数才会被加载</p>
+<h2 id="导入表结构"><a class="markdownIt-Anchor" href="#导入表结构"></a> 导入表结构</h2>
+<p><img src="/image/PE/import_table.png" srcset="/img/loading.gif" alt="导入表结构" /><br />
+表中地址均为<code>RVA</code></p>
+<h2 id="inject-code"><a class="markdownIt-Anchor" href="#inject-code"></a> inject code</h2>
+<h3 id="read-file"><a class="markdownIt-Anchor" href="#read-file"></a> read file</h3>
+<pre><code class="hljs c++">
+DWORD ext_size = <span class="hljs-number">0x1000</span>; <span class="hljs-comment">// 文件扩大的大小</span>
+FILE* g_f = fopen(filename, <span class="hljs-string">"rb"</span>);
+fseek(g_f, <span class="hljs-number">0</span>, SEEK_END);
+<span class="hljs-keyword">int</span> file_size = ftell(g_f);
+<span class="hljs-built_in">printf</span>(<span class="hljs-string">"file size : %d\n"</span>, file_size);
+<span class="hljs-keyword">auto</span> out_size = file_size + ext_size;
+BYTE* file_buff = (BYTE*)<span class="hljs-built_in">malloc</span>(out_size); <span class="hljs-built_in">memset</span>(file_buff, <span class="hljs-number">0</span>, out_size);
+fseek(g_f, <span class="hljs-number">0</span>, SEEK_SET);
+fread(file_buff, file_size, <span class="hljs-number">1</span>, g_f);
+
+fclose(g_f);</code></pre>
+<h3 id="extend-the-last-section"><a class="markdownIt-Anchor" href="#extend-the-last-section"></a> extend the last section</h3>
+<pre><code class="hljs c++">PIMAGE_IMPORT_DESCRIPTOR import_table = (PIMAGE_IMPORT_DESCRIPTOR)(file_buff + RVA2FOV(section_header, sections_nums, op_header-&gt;DataDirectory[IMPORT_TABLE].VirtualAddress));
+
+<span class="hljs-keyword">auto</span> last_section_header = section_header + sections_nums - <span class="hljs-number">1</span>;
+<span class="hljs-keyword">auto</span> old_last_size = last_section_header-&gt;Misc.VirtualSize;
+<span class="hljs-keyword">auto</span> N = <span class="hljs-built_in">max</span>(last_section_header-&gt;Misc.VirtualSize, last_section_header-&gt;SizeOfRawData) + ext_size;
+last_section_header-&gt;Misc.VirtualSize = last_section_header-&gt;SizeOfRawData = N;
+last_section_header-&gt;Characteristics = <span class="hljs-number">0xc0000040</span>;
+op_header-&gt;SizeOfImage += ext_size;</code></pre>
+<p><strong><code>Characteristics</code>of<code>section</code>must be<code>0xc0000040</code></strong></p>
+<h3 id="copy-origin-import-table"><a class="markdownIt-Anchor" href="#copy-origin-import-table"></a> copy origin import table</h3>
+<pre><code class="hljs c++"><span class="hljs-comment">// file offset to virtual offset to address in the last section</span>
+<span class="hljs-keyword">auto</span> FOA2RVA = [last_section_header,file_buff](BYTE* addr) &#123;
+    <span class="hljs-keyword">return</span> (DWORD)(last_section_header-&gt;VirtualAddress + (addr - (last_section_header-&gt;PointerToRawData + file_buff)));
+&#125;;
+
+PIMAGE_IMPORT_DESCRIPTOR dest = (PIMAGE_IMPORT_DESCRIPTOR)(file_buff + file_size);
+
+op_header-&gt;DataDirectory[IMPORT_TABLE].VirtualAddress = FOA2RVA((BYTE*)dest);
+op_header-&gt;DataDirectory[IMPORT_TABLE].Size += <span class="hljs-keyword">sizeof</span>(*dest);
+<span class="hljs-keyword">auto</span> p = dest;
+<span class="hljs-keyword">for</span> (; *(DWORD*)import_table != <span class="hljs-number">0</span>;++import_table,++p) &#123;
+    <span class="hljs-built_in">memcpy</span>(p,import_table,<span class="hljs-keyword">sizeof</span>(*import_table));
+&#125;</code></pre>
+<h2 id="add-new-import-table-and-int-iat"><a class="markdownIt-Anchor" href="#add-new-import-table-and-int-iat"></a> add new import table and INT IAT</h2>
+<pre><code class="hljs c++"><span class="hljs-keyword">auto</span> patch = p; <span class="hljs-comment">// the new import talbe fixed later</span>
+DWORD* int_table =(DWORD*)(p + <span class="hljs-number">2</span>);
+
+DWORD* iat_table = (DWORD*)(int_table + <span class="hljs-number">2</span>);
+
+WORD* name = (WORD*)(iat_table + <span class="hljs-number">2</span>);
+
+<span class="hljs-built_in">memcpy</span>(name + <span class="hljs-number">1</span>, <span class="hljs-string">"add"</span>, <span class="hljs-number">4</span>);
+iat_table[<span class="hljs-number">0</span>] = int_table[<span class="hljs-number">0</span>] = FOA2RVA((BYTE*)name);
+
+BYTE* dll_addr = (BYTE*)(name + <span class="hljs-number">1</span> + <span class="hljs-number">2</span>);
+
+<span class="hljs-built_in">memcpy</span>(dll_addr, dllname, <span class="hljs-built_in">strlen</span>(dllname) + <span class="hljs-number">1</span>);
+<span class="hljs-comment">// fix new import talbe address</span>
+patch-&gt;Name = FOA2RVA((BYTE*)dll_addr);
+patch-&gt;FirstThunk = FOA2RVA((BYTE*)iat_table);
+patch-&gt;OriginalFirstThunk = FOA2RVA((BYTE*)int_table);</code></pre>
+<h3 id="the-whole-code"><a class="markdownIt-Anchor" href="#the-whole-code"></a> the whole code</h3>
+<pre><code class="hljs c++">
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">injectImportTable</span><span class="hljs-params">(<span class="hljs-keyword">const</span> <span class="hljs-keyword">char</span>* filename,<span class="hljs-keyword">const</span> <span class="hljs-keyword">char</span>* newname,<span class="hljs-keyword">const</span> <span class="hljs-keyword">char</span>* dllname)</span> </span>&#123;
+
+	DWORD ext_size = <span class="hljs-number">0x1000</span>;
+	FILE* g_f = fopen(filename, <span class="hljs-string">"rb"</span>);
+	fseek(g_f, <span class="hljs-number">0</span>, SEEK_END);
+	<span class="hljs-keyword">int</span> file_size = ftell(g_f);
+	<span class="hljs-built_in">printf</span>(<span class="hljs-string">"file size : %d\n"</span>, file_size);
+	<span class="hljs-keyword">auto</span> out_size = file_size + ext_size;
+	BYTE* file_buff = (BYTE*)<span class="hljs-built_in">malloc</span>(out_size); <span class="hljs-built_in">memset</span>(file_buff, <span class="hljs-number">0</span>, out_size);
+	fseek(g_f, <span class="hljs-number">0</span>, SEEK_SET);
+	fread(file_buff, file_size, <span class="hljs-number">1</span>, g_f);
+	fclose(g_f);
+
+	PIMAGE_DOS_HEADER dos_header = (PIMAGE_DOS_HEADER)file_buff;
+	<span class="hljs-keyword">auto</span> pe_header_offset = dos_header-&gt;e_lfanew;
+	PIMAGE_NT_HEADERS nt_header = (PIMAGE_NT_HEADERS)(file_buff + pe_header_offset);
+	PIMAGE_FILE_HEADER file_header = &amp;nt_header-&gt;FileHeader;
+
+	<span class="hljs-keyword">auto</span> sections_nums = file_header-&gt;NumberOfSections;
+	PIMAGE_OPTIONAL_HEADER op_header = &amp;nt_header-&gt;OptionalHeader;
+
+	<span class="hljs-keyword">auto</span> headers_size = op_header-&gt;SizeOfHeaders;
+	<span class="hljs-keyword">auto</span> image_base = op_header-&gt;ImageBase;
+	<span class="hljs-keyword">auto</span> image_size = op_header-&gt;SizeOfImage;
+	PIMAGE_SECTION_HEADER section_header = PIMAGE_SECTION_HEADER((BYTE*)op_header + file_header-&gt;SizeOfOptionalHeader);
+
+
+	<span class="hljs-comment">// extend last section</span>
+
+	PIMAGE_IMPORT_DESCRIPTOR import_table = (PIMAGE_IMPORT_DESCRIPTOR)(file_buff + RVA2FOV(section_header, sections_nums, op_header-&gt;DataDirectory[IMPORT_TABLE].VirtualAddress));
+	
+	<span class="hljs-keyword">auto</span> text_attr = section_header-&gt;Characteristics; <span class="hljs-comment">// characteristics of text</span>
+
+	<span class="hljs-keyword">auto</span> last_section_header = section_header + sections_nums - <span class="hljs-number">1</span>;
+	<span class="hljs-keyword">auto</span> old_last_size = last_section_header-&gt;Misc.VirtualSize;
+	<span class="hljs-keyword">auto</span> N = <span class="hljs-built_in">max</span>(last_section_header-&gt;Misc.VirtualSize, last_section_header-&gt;SizeOfRawData) + ext_size;
+	last_section_header-&gt;Misc.VirtualSize = last_section_header-&gt;SizeOfRawData = N;
+	last_section_header-&gt;Characteristics = <span class="hljs-number">0xc0000040</span>;
+	op_header-&gt;SizeOfImage += ext_size;
+
+	<span class="hljs-keyword">auto</span> FOA2RVA = [last_section_header,file_buff](BYTE* addr) &#123;
+		<span class="hljs-keyword">return</span> (DWORD)(last_section_header-&gt;VirtualAddress + (addr - (last_section_header-&gt;PointerToRawData + file_buff)));
+	&#125;;
+
+	PIMAGE_IMPORT_DESCRIPTOR dest = (PIMAGE_IMPORT_DESCRIPTOR)(file_buff + file_size);
+
+	op_header-&gt;DataDirectory[IMPORT_TABLE].VirtualAddress = FOA2RVA((BYTE*)dest);
+	op_header-&gt;DataDirectory[IMPORT_TABLE].Size += <span class="hljs-keyword">sizeof</span>(*dest);
+	<span class="hljs-keyword">auto</span> p = dest;
+	<span class="hljs-keyword">for</span> (; *(DWORD*)import_table != <span class="hljs-number">0</span>;++import_table,++p) &#123;
+		<span class="hljs-built_in">memcpy</span>(p,import_table,<span class="hljs-keyword">sizeof</span>(*import_table));
+	&#125;
+
+	<span class="hljs-keyword">auto</span> patch = p;
+
+	DWORD* int_table =(DWORD*)(p + <span class="hljs-number">2</span>);
+
+	DWORD* iat_table = (DWORD*)(int_table + <span class="hljs-number">2</span>);
+
+	WORD* name = (WORD*)(iat_table + <span class="hljs-number">2</span>);
+
+	<span class="hljs-built_in">memcpy</span>(name + <span class="hljs-number">1</span>, <span class="hljs-string">"add"</span>, <span class="hljs-number">4</span>);
+	iat_table[<span class="hljs-number">0</span>] = int_table[<span class="hljs-number">0</span>] = FOA2RVA((BYTE*)name);
+
+	BYTE* dll_addr = (BYTE*)(name + <span class="hljs-number">1</span> + <span class="hljs-number">2</span>);
+
+	<span class="hljs-built_in">memcpy</span>(dll_addr, dllname, <span class="hljs-built_in">strlen</span>(dllname) + <span class="hljs-number">1</span>);
+	patch-&gt;Name = FOA2RVA((BYTE*)dll_addr);
+	patch-&gt;FirstThunk = FOA2RVA((BYTE*)iat_table);
+	patch-&gt;OriginalFirstThunk = FOA2RVA((BYTE*)int_table);
+
+	g_f = fopen(newname, <span class="hljs-string">"wb"</span>);
+	fwrite(file_buff, out_size, <span class="hljs-number">1</span>, g_f);
+	fclose(g_f);
+&#125;</code></pre>
+            </article>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/PE/">PE</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" target="_blank" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <div class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/08/19/raft/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">raft implement notice</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </div>
+                  <div class="post-next col-6">
+                    
+                    
+                      <a href="/2020/07/05/code%20template/">
+                        <span class="hidden-mobile">algorithm template</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </div>
+                </div>
+              
+            </div>
+
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;TOC</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <div>
+      <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener">
+        <span>Fluid</span></a>
+    </div>
+    
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/main.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/lazyload.js" ></script>
+  
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+
+
+
+
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: 'article.markdown-body',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "PE import table inject&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+  
+
+  
+    <!-- KaTeX -->
+    <link  rel="stylesheet" href="https://cdn.staticfile.org/KaTeX/0.11.1/katex.min.css" />
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>
