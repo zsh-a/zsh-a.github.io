@@ -17,7 +17,7 @@
   <meta name="description" content="">
   <meta name="author" content="John Doe">
   <meta name="keywords" content="">
-  <title>raft implement notice - Hexo</title>
+  <title>git - Hexo</title>
 
   <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
 
@@ -153,8 +153,8 @@
               
   <div class="mt-3 post-meta">
     <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-    <time datetime="2020-08-19 20:23">
-      August 19, 2020 pm
+    <time datetime="2021-01-09 23:31">
+      January 9, 2021 pm
     </time>
   </div>
 
@@ -164,7 +164,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      68 字
+      220 字
     </span>
   
 
@@ -174,7 +174,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      1
+      4
        分钟
     </span>
   
@@ -205,25 +205,68 @@
           <div class="post-content mx-auto" id="post">
             
             <article class="markdown-body">
-              <ol>
-<li>server should convert to <code>follower</code> and set <code>currentTerm</code> to be <code>args's Term</code>, when receive a RPC message</li>
-<li>when a <code>follower</code> is disconnected from cluster, connecting back later, it’s term is large than the others. It will send requestVote to others (include <code>leader</code>), then current <code>leader</code> convert to <code>follow</code>, starting a new election. It will eventually convert to <code>leader</code>. Connected <code>follower</code> cannot acquire votes because <code>Election restriction</code></li>
-</ol>
+              <h2 id="the-three-states"><a class="markdownIt-Anchor" href="#the-three-states"></a> The Three States</h2>
+<ul>
+<li><strong>Modified</strong> : have changed the file but not commited to the database.</li>
+<li><strong>Staged</strong> : have marked a modifed file in its current to be your next commit snapshot</li>
+<li><strong>Committed</strong> : the data have been stored in local database</li>
+</ul>
+<h2 id="viewing-your-staged-and-unstaged-changes"><a class="markdownIt-Anchor" href="#viewing-your-staged-and-unstaged-changes"></a> Viewing Your Staged and Unstaged Changes</h2>
+<ul>
+<li><code>git diff</code> : compares what is in your working directory with what is in your staging area.</li>
+<li><code>git diff --staged</code> : compares your staged changes to your last commit</li>
+</ul>
+<h2 id="removing-files"><a class="markdownIt-Anchor" href="#removing-files"></a> Removing Files</h2>
+<ul>
+<li>
+<p><code>git rm PROJECTS.md</code> : untrack “<a href="http://PROJECTS.md" target="_blank" rel="noopener">PROJECTS.md</a>”</p>
+</li>
+<li>
+<p><code>git rm --cached README</code> : keep the file on your hard drive but not have Git track it anymore.</p>
+</li>
+</ul>
+<h2 id="moving-files"><a class="markdownIt-Anchor" href="#moving-files"></a> Moving Files</h2>
+<p><code>$ git mv file_from file_to</code> is equivalent to running something like this:</p>
+<pre><code class="hljs shell"><span class="hljs-meta">$</span><span class="bash"> mv README.md README</span>
+<span class="hljs-meta">$</span><span class="bash"> git rm README.md</span>
+<span class="hljs-meta">$</span><span class="bash"> git add README</span></code></pre>
+<h2 id="undoing-things"><a class="markdownIt-Anchor" href="#undoing-things"></a> Undoing Things</h2>
+<p>when you commit early and forget to add some files, redo that commit, stage changes, and commit again using <code>--amend</code>.</p>
+<pre><code class="hljs shell"><span class="hljs-meta">$</span><span class="bash"> git commit --amend</span></code></pre>
+<p>the second commit will replace the first.</p>
+<h2 id="unstaging-a-staged-file"><a class="markdownIt-Anchor" href="#unstaging-a-staged-file"></a> Unstaging a Staged File</h2>
+<ul>
+<li><code>git restore --staged</code> : unstage a staged file</li>
+<li><code>git restore</code> : unmodifying a modified file with git restore</li>
+</ul>
+<h1 id="git-branching"><a class="markdownIt-Anchor" href="#git-branching"></a> Git Branching</h1>
+<p><img src="../image/PE/checkout-master.png" srcset="/img/loading.gif" alt="" /></p>
+<ul>
+<li>
+<p>branch : a pointer to these commited metadata</p>
+</li>
+<li>
+<p>HEAD point to current branch</p>
+</li>
+<li>
+<p><code>git checkout</code> switch branch</p>
+</li>
+<li>
+<p><code>git branch -d</code> delete branch</p>
+</li>
+<li>
+<p>rename a branch<br />
+<code>$ git branch --move bad-branch-name corrected-branch-name</code><br />
+push to remote<br />
+<code>$ git push --set-upstream origin corrected-branch-name</code></p>
+</li>
+</ul>
 
             </article>
             <hr>
             <div>
               <div class="post-metas mb-3">
                 
-                
-                  <div class="post-meta">
-                    <i class="iconfont icon-tags"></i>
-                    
-                      <a class="hover-with-bg" href="/tags/distributed/">distributed</a>
-                    
-                      <a class="hover-with-bg" href="/tags/raft/">raft</a>
-                    
-                  </div>
                 
               </div>
               
@@ -234,9 +277,9 @@
                   <div class="post-prev col-6">
                     
                     
-                      <a href="/2020/10/09/linux/">
+                      <a href="/2021/01/25/lex/">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">linux programing</span>
+                        <span class="hidden-mobile">lexcial</span>
                         <span class="visible-mobile">Previous</span>
                       </a>
                     
@@ -244,8 +287,8 @@
                   <div class="post-next col-6">
                     
                     
-                      <a href="/2020/08/06/PE%20%E5%AF%BC%E5%85%A5%E8%A1%A8%E6%B3%A8%E5%85%A5/">
-                        <span class="hidden-mobile">PE import table inject</span>
+                      <a href="/2021/01/02/sql/">
+                        <span class="hidden-mobile">sql</span>
                         <span class="visible-mobile">Next</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
@@ -384,7 +427,7 @@
     var typed = new Typed('#subtitle', {
       strings: [
         '  ',
-        "raft implement notice&nbsp;",
+        "git&nbsp;",
       ],
       cursorChar: "_",
       typeSpeed: 70,
