@@ -164,7 +164,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      284 字
+      1.4k 字
     </span>
   
 
@@ -174,7 +174,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      5
+      28
        分钟
     </span>
   
@@ -248,23 +248,289 @@
 <li>pop and evaluate the reminder elements in stack</li>
 </ol>
 <p>evaluating a regex expression is similar to evaluating arithmetic expressions. The difference is that the star operation only pops one element from the stack. Additionally, the concatenation operation is not denoted by any symbol, so we would have to detect it. We insert <code>.</code> into regex to represent concatenation operation.</p>
-<pre><code class="hljs c++"><span class="hljs-keyword">auto</span> isOprand = [](<span class="hljs-keyword">char</span> ch)&#123;
-    <span class="hljs-keyword">if</span>(ch == <span class="hljs-string">'|'</span> || ch == <span class="hljs-string">'('</span> || ch == <span class="hljs-string">')'</span> || ch == <span class="hljs-string">'*'</span>) <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
-    <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+<pre><code class="hljs c++"><span class="hljs-keyword">auto</span> isOperand = [](<span class="hljs-keyword">char</span> ch)&#123;
+    <span class="hljs-keyword">return</span> ch != <span class="hljs-string">'('</span> &amp;&amp; ch != <span class="hljs-string">'.'</span> &amp;&amp; ch != <span class="hljs-string">'|'</span>;
 &#125;;
+
 
 <span class="hljs-built_in">string</span> s;
 <span class="hljs-keyword">int</span> prev = <span class="hljs-number">0</span>;
-<span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>;i &lt; reg.<span class="hljs-built_in">size</span>();i++)&#123;
-    <span class="hljs-keyword">if</span>(!isOprand(reg[i]))&#123;
-        <span class="hljs-keyword">if</span>(prev) s += <span class="hljs-string">'.'</span>;
-        prev = <span class="hljs-number">1</span>;
-    &#125;<span class="hljs-keyword">else</span>&#123;
-        prev = <span class="hljs-number">0</span>;
-    &#125;
+<span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>;i &lt; reg.<span class="hljs-built_in">size</span>() - <span class="hljs-number">1</span>;i++)&#123;
     s += reg[i];
-&#125;</code></pre>
+    <span class="hljs-keyword">auto</span> next = reg[i + <span class="hljs-number">1</span>];
+    <span class="hljs-keyword">if</span>(isOperand(reg[i]) &amp;&amp; next != <span class="hljs-string">'|'</span> &amp;&amp; next != <span class="hljs-string">'*'</span> &amp;&amp; next != <span class="hljs-string">')'</span>)&#123;
+        s += <span class="hljs-string">'.'</span>;
+    &#125;
+&#125;
+s += reg[reg.<span class="hljs-built_in">size</span>() - <span class="hljs-number">1</span>];</code></pre>
+<h2 id="nfa-to-dfa"><a class="markdownIt-Anchor" href="#nfa-to-dfa"></a> NFA to DFA</h2>
+<h3 id="data-struct-2"><a class="markdownIt-Anchor" href="#data-struct-2"></a> Data Struct</h3>
+<pre><code class="hljs c++"><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">DFA_Node</span>&#123;</span>
+    <span class="hljs-keyword">enum</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">State</span>&#123;</span>
+        ACCEPT,NON_ACCEPT
+    &#125;;
+    <span class="hljs-keyword">int</span> id_ = <span class="hljs-number">-1</span>;
+    State state_&#123;State::NON_ACCEPT&#125;;
 
+    <span class="hljs-built_in">vector</span>&lt;DFA_Node*&gt; edges_;
+    <span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">char</span>&gt; values_;
+    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">add_edge</span><span class="hljs-params">(<span class="hljs-keyword">char</span> value,DFA_Node* to)</span></span>;
+&#125;;
+
+<span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">DFA</span>&#123;</span>
+    DFA_Node* start_;
+    <span class="hljs-built_in">unordered_map</span>&lt;<span class="hljs-keyword">int</span>,DFA_Node*&gt; id_to_node_;
+    <span class="hljs-comment">//...</span>
+&#125;;</code></pre>
+<h3 id="sub-set-construct-algorithm"><a class="markdownIt-Anchor" href="#sub-set-construct-algorithm"></a> Sub-Set Construct Algorithm</h3>
+<ul>
+<li>
+<p><em>Epsilon Closure</em><br />
+find all states can be arrived through <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>ϵ</mi></mrow><annotation encoding="application/x-tex">\epsilon</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathdefault">ϵ</span></span></span></span></p>
+<pre><code class="hljs c++"><span class="hljs-function"><span class="hljs-built_in">set</span>&lt;<span class="hljs-keyword">int</span>&gt; <span class="hljs-title">NFA::epsilon_closure</span><span class="hljs-params">(<span class="hljs-keyword">const</span> <span class="hljs-built_in">set</span>&lt;<span class="hljs-keyword">int</span>&gt;&amp; st)</span></span>&#123;
+    <span class="hljs-keyword">auto</span> res = st;
+
+    <span class="hljs-built_in">stack</span>&lt;<span class="hljs-keyword">int</span>&gt; stk;
+    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">auto</span> u : st) stk.push(u);
+    
+    <span class="hljs-keyword">while</span>(stk.<span class="hljs-built_in">size</span>())&#123;
+        <span class="hljs-keyword">auto</span> t = stk.top();stk.pop();
+        <span class="hljs-keyword">auto</span> node = id_to_node_[t];
+        <span class="hljs-keyword">if</span>(node-&gt;value_ == NFA_Node::EPSILON)&#123;
+            <span class="hljs-keyword">if</span>(node-&gt;next_edge1_ &amp;&amp; !res.count(node-&gt;next_edge1_-&gt;id_)) &#123;
+                res.insert(node-&gt;next_edge1_-&gt;id_);
+                stk.push(node-&gt;next_edge1_-&gt;id_);
+            &#125;
+
+            <span class="hljs-keyword">if</span>(node-&gt;next_edge2_ &amp;&amp; !res.count(node-&gt;next_edge2_-&gt;id_)) &#123;
+                res.insert(node-&gt;next_edge2_-&gt;id_);
+                stk.push(node-&gt;next_edge2_-&gt;id_);
+            &#125;
+        &#125;
+    &#125;
+    <span class="hljs-keyword">return</span> res;
+&#125;</code></pre>
+</li>
+<li>
+<p><em>Move</em><br />
+find all states can be arrived through <code>value</code></p>
+<pre><code class="hljs c++"><span class="hljs-function"><span class="hljs-built_in">set</span>&lt;<span class="hljs-keyword">int</span>&gt; <span class="hljs-title">NFA::move</span><span class="hljs-params">(<span class="hljs-keyword">char</span> value,<span class="hljs-keyword">const</span> <span class="hljs-built_in">set</span>&lt;<span class="hljs-keyword">int</span>&gt;&amp; st)</span></span>&#123;
+    <span class="hljs-built_in">set</span>&lt;<span class="hljs-keyword">int</span>&gt; res;
+    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">auto</span> u : st)&#123;   
+        <span class="hljs-keyword">auto</span> node = id_to_node_[u];
+        <span class="hljs-keyword">if</span>(node-&gt;value_ == value)&#123;
+            <span class="hljs-keyword">if</span>(node-&gt;next_edge1_) res.insert(node-&gt;next_edge1_-&gt;id_);
+            <span class="hljs-keyword">if</span>(node-&gt;next_edge2_) res.insert(node-&gt;next_edge2_-&gt;id_);
+        &#125;
+    &#125;
+    <span class="hljs-keyword">return</span> res;
+&#125;</code></pre>
+</li>
+</ul>
+<p>using the above operator, we can achieve sub-set construct algorithm</p>
+<pre><code class="hljs clean">q0 &lt;- epsilon_closure(n0)
+R &lt;- &#123;q0&#125;
+Q &lt;- q0
+
+while(Q is not empty)&#123;
+    pop q <span class="hljs-keyword">from</span> Q
+    foreach c <span class="hljs-keyword">in</span> character&#123;
+        t &lt;- epsilon_closure(move(q,c))
+        D[q,c] &lt;- t
+        <span class="hljs-keyword">if</span>(t has not <span class="hljs-keyword">in</span> Q)
+            Q &lt;- t
+    &#125;
+&#125;</code></pre>
+<pre><code class="hljs c++"><span class="hljs-function">DFA* <span class="hljs-title">NFA::to_DFA</span><span class="hljs-params">()</span></span>&#123;
+    <span class="hljs-keyword">int</span> idx = <span class="hljs-number">0</span>;
+
+    DFA* dfa = <span class="hljs-keyword">new</span> DFA&#123;&#125;;
+
+    <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">Hash</span>&#123;</span>
+        <span class="hljs-function"><span class="hljs-keyword">size_t</span>  <span class="hljs-title">operator</span><span class="hljs-params">()</span><span class="hljs-params">(<span class="hljs-keyword">const</span> <span class="hljs-built_in">set</span>&lt;<span class="hljs-keyword">int</span>&gt;&amp; st)</span> <span class="hljs-keyword">const</span></span>&#123;
+            <span class="hljs-keyword">size_t</span> ret = <span class="hljs-number">0</span>;
+            <span class="hljs-keyword">for</span>(<span class="hljs-keyword">auto</span> u : st) ret ^= hash&lt;<span class="hljs-keyword">int</span>&gt;&#123;&#125;(u);
+            <span class="hljs-keyword">return</span> ret;
+        &#125;
+    &#125;;
+
+    <span class="hljs-built_in">unordered_map</span>&lt;<span class="hljs-built_in">set</span>&lt;<span class="hljs-keyword">int</span>&gt;,<span class="hljs-keyword">int</span>,Hash&gt; set_to_id;
+    <span class="hljs-built_in">unordered_map</span>&lt;<span class="hljs-keyword">int</span>,<span class="hljs-built_in">set</span>&lt;<span class="hljs-keyword">int</span>&gt;&gt; id_to_set;
+
+    <span class="hljs-keyword">auto</span> out = [](<span class="hljs-keyword">const</span> <span class="hljs-built_in">set</span>&lt;<span class="hljs-keyword">int</span>&gt; &amp; st)&#123;
+        <span class="hljs-built_in">cout</span> &lt;&lt; <span class="hljs-string">"set&#123;"</span>;
+        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">auto</span> u : st) <span class="hljs-built_in">cout</span> &lt;&lt; u &lt;&lt;<span class="hljs-string">","</span>;
+        <span class="hljs-built_in">cout</span> &lt;&lt; <span class="hljs-string">"&#125;\n"</span>;
+    &#125;;
+
+    <span class="hljs-built_in">queue</span>&lt;<span class="hljs-keyword">int</span>&gt; q;
+    <span class="hljs-keyword">auto</span> q0 = epsilon_closure(&#123;start_-&gt;id_&#125;);
+
+    dfa-&gt;id_to_node_[idx] = <span class="hljs-keyword">new</span> DFA_Node&#123;id_:idx&#125;;
+
+    id_to_set[idx] = q0;
+    set_to_id[q0] = idx++;
+
+    <span class="hljs-built_in">unordered_set</span>&lt;<span class="hljs-keyword">int</span>&gt; inq;
+
+    q.push(<span class="hljs-number">0</span>);
+
+    inq.insert(<span class="hljs-number">0</span>);
+
+    <span class="hljs-keyword">while</span>(q.<span class="hljs-built_in">size</span>())&#123;
+        <span class="hljs-keyword">auto</span> t = q.front();q.pop();
+        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = <span class="hljs-number">1</span>;i &lt;= <span class="hljs-number">127</span>;i++)&#123;
+            <span class="hljs-keyword">auto</span> tt = epsilon_closure(<span class="hljs-built_in">move</span>(i,id_to_set[t]));
+
+            <span class="hljs-keyword">if</span>(!tt.<span class="hljs-built_in">size</span>()) <span class="hljs-keyword">continue</span>;
+            <span class="hljs-comment">// out(tt); cout &lt;&lt; char(i) &lt;&lt; endl;</span>
+            
+            <span class="hljs-keyword">if</span>(!set_to_id.count(tt))&#123;
+                set_to_id[tt] = idx;
+                id_to_set[idx] = tt;
+                dfa-&gt;id_to_node_[idx] = <span class="hljs-keyword">new</span> DFA_Node&#123;id_:idx&#125;;
+                idx++;
+            &#125;
+            <span class="hljs-keyword">auto</span> tt_id = set_to_id[tt];
+            <span class="hljs-comment">// cout &lt;&lt; t &lt;&lt;" -&gt; " &lt;&lt; tt_id &lt;&lt; endl;</span>
+            dfa-&gt;id_to_node_[t]-&gt;add_edge(i,dfa-&gt;id_to_node_[tt_id]);
+
+            <span class="hljs-keyword">if</span>(!inq.count(tt_id))&#123;
+                q.push(tt_id);
+                inq.insert(tt_id);
+            &#125;
+        &#125;
+    &#125;
+
+    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">auto</span>&amp; [k,v] : set_to_id)&#123;
+        <span class="hljs-keyword">if</span>(k.count(end_-&gt;id_)) dfa-&gt;id_to_node_[v]-&gt;state_ = DFA_Node::State::ACCEPT;
+    &#125;
+    dfa-&gt;start_ = dfa-&gt;id_to_node_[<span class="hljs-number">0</span>];
+    <span class="hljs-keyword">return</span> dfa;
+&#125;</code></pre>
+<h2 id="mini-dfa"><a class="markdownIt-Anchor" href="#mini-dfa"></a> Mini-DFA</h2>
+<h3 id="hopcroft-algorithm"><a class="markdownIt-Anchor" href="#hopcroft-algorithm"></a> Hopcroft Algorithm</h3>
+<ol>
+<li>Initially we place the states of the (not necessarily minimal) DFA into two<br />
+equivalence classes: final states and nonfinal states.</li>
+<li>We then repeatedly search for<br />
+an equivalence class X and an input symbol c such that when given c as input,<br />
+the states in X make transitions to states in k &gt; 1 different equivalence classes.<br />
+We then partition X into k classes in such a way that all states in a given new class<br />
+would move to a member of the same old class on c.</li>
+</ol>
+<pre><code class="hljs c++"><span class="hljs-keyword">void</span> DFA::_split(<span class="hljs-built_in">vector</span>&lt;<span class="hljs-built_in">set</span>&lt;<span class="hljs-keyword">int</span>&gt;&gt;&amp; all_state,<span class="hljs-built_in">set</span>&lt;<span class="hljs-keyword">int</span>&gt;&amp; cur_set)&#123;
+    <span class="hljs-comment">// auto&amp; cur_set = all_state[index];</span>
+    <span class="hljs-keyword">if</span>(cur_set.<span class="hljs-built_in">size</span>() == <span class="hljs-number">1</span>) <span class="hljs-keyword">return</span>;
+    <span class="hljs-built_in">unordered_map</span>&lt;<span class="hljs-keyword">int</span>,<span class="hljs-keyword">int</span>&gt; state_in_set;
+
+    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; <span class="hljs-keyword">auto</span>&amp; v : all_state)&#123;
+        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">auto</span> u : v)&#123;
+            state_in_set[u] = i;
+        &#125;
+        i++;
+    &#125;
+
+    <span class="hljs-comment">// </span>
+    <span class="hljs-built_in">unordered_map</span>&lt;<span class="hljs-keyword">int</span>,<span class="hljs-built_in">set</span>&lt;<span class="hljs-keyword">int</span>&gt;&gt; setId_to_state;
+
+    <span class="hljs-keyword">bool</span> splited = <span class="hljs-literal">false</span>;
+    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = <span class="hljs-number">1</span>;i &lt;= <span class="hljs-number">127</span>;i++)&#123;
+        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">auto</span> st : cur_set)&#123;
+
+            <span class="hljs-comment">// if no trans from `st` through `i` char, then add `st` to it's new set.</span>
+            <span class="hljs-keyword">bool</span> transed = <span class="hljs-literal">false</span>;
+            <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> j = <span class="hljs-number">0</span>;<span class="hljs-keyword">auto</span> nb : id_to_node_[st]-&gt;edges_)&#123;
+                <span class="hljs-keyword">if</span>(id_to_node_[st]-&gt;values_[j] == i)&#123;
+                    setId_to_state[state_in_set[nb-&gt;id_]].insert(st);
+                    transed = <span class="hljs-literal">true</span>;
+                &#125;
+                j++;
+            &#125;
+            <span class="hljs-keyword">if</span>(!transed) setId_to_state[state_in_set[st]].insert(st);
+        &#125;
+
+        <span class="hljs-keyword">if</span>(setId_to_state.<span class="hljs-built_in">size</span>() &gt; <span class="hljs-number">1</span>)&#123;
+            all_state.erase(<span class="hljs-built_in">find</span>(all_state.<span class="hljs-built_in">begin</span>(),all_state.<span class="hljs-built_in">end</span>(),cur_set));
+            <span class="hljs-keyword">for</span>(<span class="hljs-keyword">auto</span>&amp; [k,v] : setId_to_state)&#123;
+                all_state.push_back(v);
+            &#125;
+
+            <span class="hljs-keyword">for</span>(<span class="hljs-keyword">auto</span>&amp; [k,v] : setId_to_state)&#123;
+                _split(all_state,v);
+            &#125;
+            splited = <span class="hljs-literal">true</span>;
+        &#125;
+        <span class="hljs-keyword">if</span>(splited) <span class="hljs-keyword">break</span>;
+
+        setId_to_state.<span class="hljs-built_in">clear</span>();
+    &#125;
+    
+&#125;
+
+
+<span class="hljs-function">DFA* <span class="hljs-title">DFA::min_DFA</span><span class="hljs-params">()</span></span>&#123;
+
+    <span class="hljs-built_in">set</span>&lt;<span class="hljs-keyword">int</span>&gt; accepted,non_accepted;
+
+    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">auto</span>&amp; [k,v] : id_to_node_)&#123;
+        <span class="hljs-keyword">if</span>(v-&gt;state_ == DFA_Node::State::ACCEPT) accepted.insert(k);
+        <span class="hljs-keyword">else</span> non_accepted.insert(k);
+    &#125;
+
+    <span class="hljs-built_in">vector</span>&lt;<span class="hljs-built_in">set</span>&lt;<span class="hljs-keyword">int</span>&gt;&gt; all_state;
+
+    all_state.push_back(non_accepted);
+    all_state.push_back(accepted);
+
+    _split(all_state,accepted);
+    _split(all_state,non_accepted);
+
+    <span class="hljs-built_in">unordered_map</span>&lt;<span class="hljs-keyword">int</span>,<span class="hljs-keyword">int</span>&gt; state_in_set;
+
+    DFA* dfa = <span class="hljs-keyword">new</span> DFA&#123;&#125;;
+
+    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>;<span class="hljs-keyword">auto</span>&amp; s : all_state)&#123;
+        dfa-&gt;id_to_node_[i] = <span class="hljs-keyword">new</span> DFA_Node&#123;id_:i&#125;;
+        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">auto</span> u : s)
+            state_in_set[u] = i;
+        i++;
+    &#125;
+
+    <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">Hash</span>&#123;</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">size_t</span> <span class="hljs-title">operator</span><span class="hljs-params">()</span><span class="hljs-params">(<span class="hljs-keyword">const</span> pair&lt;<span class="hljs-keyword">int</span>,<span class="hljs-keyword">int</span>&gt;&amp; pr)</span> <span class="hljs-keyword">const</span></span>&#123;
+            <span class="hljs-keyword">return</span> hash&lt;<span class="hljs-keyword">int</span>&gt;&#123;&#125;(pr.first) ^ hash&lt;<span class="hljs-keyword">int</span>&gt;&#123;&#125;(pr.second);
+        &#125;
+    &#125;;
+
+    <span class="hljs-comment">// iterate all of new states</span>
+    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>;<span class="hljs-keyword">auto</span>&amp; s : all_state)&#123;
+        <span class="hljs-comment">// record added edges in case duplication</span>
+        <span class="hljs-built_in">unordered_set</span>&lt;pair&lt;<span class="hljs-keyword">int</span>,<span class="hljs-keyword">int</span>&gt;,Hash&gt; record_edge; 
+        <span class="hljs-comment">// iterate all state in old dfa</span>
+        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">auto</span> u : s)&#123;
+            <span class="hljs-keyword">if</span>(id_to_node_[u]-&gt;state_ == DFA_Node::State::ACCEPT)
+                dfa-&gt;id_to_node_[state_in_set[u]]-&gt;state_ = DFA_Node::State::ACCEPT;
+            <span class="hljs-comment">// iterate all edges of node</span>
+            <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> j = <span class="hljs-number">0</span>;<span class="hljs-keyword">auto</span> nb : id_to_node_[u]-&gt;edges_)&#123;
+                <span class="hljs-comment">// remove duplication</span>
+                <span class="hljs-comment">// if the edge has not been record then add it </span>
+                <span class="hljs-keyword">if</span>(!record_edge.count(&#123;state_in_set[nb-&gt;id_],id_to_node_[u]-&gt;values_[j]&#125;))&#123;
+                    dfa-&gt;id_to_node_[i]-&gt;add_edge(id_to_node_[u]-&gt;values_[j],dfa-&gt;id_to_node_[state_in_set[nb-&gt;id_]]);
+                    record_edge.insert(&#123;state_in_set[nb-&gt;id_],id_to_node_[u]-&gt;values_[j]&#125;);
+                &#125;
+                j++;
+            &#125;
+        &#125;
+        i++;
+    &#125;
+
+    dfa-&gt;start_ = dfa-&gt;id_to_node_[state_in_set[<span class="hljs-number">0</span>]];
+    <span class="hljs-comment">// reallocate id for every state for sequence</span>
+    dfa-&gt;alloc_id();
+    <span class="hljs-keyword">return</span> dfa;
+&#125;</code></pre>
             </article>
             <hr>
             <div>
@@ -292,6 +558,12 @@
                 <div class="post-prevnext row">
                   <div class="post-prev col-6">
                     
+                    
+                      <a href="/2021/02/19/os/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">os</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
                     
                   </div>
                   <div class="post-next col-6">

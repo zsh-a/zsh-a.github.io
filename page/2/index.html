@@ -17,7 +17,7 @@
   <meta name="description" content="">
   <meta name="author" content="John Doe">
   <meta name="keywords" content="">
-  <title>Tags - Hexo</title>
+  <title>Hexo</title>
 
   <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
 
@@ -42,7 +42,7 @@
 
 
 <body>
-  <header style="height: 80vh;">
+  <header style="height: 100vh;">
     <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
   <div class="container">
     <a class="navbar-brand"
@@ -143,6 +143,10 @@
           </div>
 
           
+            <div class="scroll-down-bar">
+              <i class="iconfont icon-arrowdown"></i>
+            </div>
+          
         </div>
       </div>
     </div>
@@ -152,16 +156,94 @@
     
       <div class="container nopadding-md">
         <div class="py-5" id="board"
-          >
+          style=margin-top:0>
           
           <div class="container">
             <div class="row">
               <div class="col-12 col-md-10 m-auto">
                 
 
-<div class="text-center tagcloud">
-  <a href="/tags/DFA/" style="font-size: 15px; color: #bbe">DFA</a> <a href="/tags/NFA/" style="font-size: 15px; color: #bbe">NFA</a> <a href="/tags/PE/" style="font-size: 15px; color: #bbe">PE</a> <a href="/tags/compiler/" style="font-size: 15px; color: #bbe">compiler</a> <a href="/tags/distributed/" style="font-size: 15px; color: #bbe">distributed</a> <a href="/tags/linux/" style="font-size: 30px; color: #337ab7">linux</a> <a href="/tags/network-programming/" style="font-size: 15px; color: #bbe">network programming</a> <a href="/tags/operating-system/" style="font-size: 15px; color: #bbe">operating system</a> <a href="/tags/os/" style="font-size: 30px; color: #337ab7">os</a> <a href="/tags/raft/" style="font-size: 15px; color: #bbe">raft</a> <a href="/tags/regex/" style="font-size: 15px; color: #bbe">regex</a> <a href="/tags/sql/" style="font-size: 15px; color: #bbe">sql</a>
-</div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <div class="col-12 col-md-12 mx-auto index-info">
+      <a class="index-header" href="/2020/07/05/code%20template/">algorithm template</a>
+
+      <a href="/2020/07/05/code%20template/" class="index-excerpt">
+        
+        
+          
+        
+        <div> 模板题
+ 0x00排序
+ 快速排序
+给定你一个长度为n的整数数列。
+请你使用快速排序对这个数列按照从小到大进行排序。
+并将排好序的数列按顺序输出。
+ 输入格式
+输入共两行，第一行包含整数 n。
+第二行包含 n 个整数（所有整数均在1−1091-10^{9}1−109范围内），表示整个数列。
+ 输出格式
+输出共一行，包含 n 个整数，表示排好序的数列。
+ 数据范围
+1≤n≤1000001≤n≤10</div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>&nbsp;2020-07-05
+          </div>
+        
+        
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <div class="col-12 col-md-12 mx-auto index-info">
+      <a class="index-header" href="/2020/07/03/hello-world/">Hello World</a>
+
+      <a href="/2020/07/03/hello-world/" class="index-excerpt">
+        
+        
+          
+        
+        <div>Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub.
+ Quic</div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>&nbsp;2020-07-03
+          </div>
+        
+        
+        
+      </div>
+    </div>
+  </div>
+
+
+
+  <nav aria-label="navigation">
+    <span class="pagination" id="pagination">
+      <a class="extend prev" rel="prev" href="/"><i class="iconfont icon-arrowleft"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span>
+    </span>
+  </nav>
+  
+  <script>
+    for (ele of document.getElementById("pagination").getElementsByTagName("a")) {
+      ele.href += '#board';
+    }
+  </script>
+
+
 
               </div>
             </div>
@@ -252,7 +334,7 @@
     var typed = new Typed('#subtitle', {
       strings: [
         '  ',
-        "Tag&nbsp;",
+        "An elegant Material-Design theme for Hexo&nbsp;",
       ],
       cursorChar: "_",
       typeSpeed: 70,

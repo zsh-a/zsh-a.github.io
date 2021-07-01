@@ -168,6 +168,195 @@
     
     
     <div class="col-12 col-md-12 mx-auto index-info">
+      <a class="index-header" href="/2021/03/28/linux%20network%20programming/">linux 网络编程</a>
+
+      <a href="/2021/03/28/linux%20network%20programming/" class="index-excerpt">
+        
+        
+          
+        
+        <div></div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>&nbsp;2021-03-28
+          </div>
+        
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/linux/">linux</a>
+            
+              <a href="/tags/network-programming/">network programming</a>
+            
+          </div>
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <div class="col-12 col-md-12 mx-auto index-info">
+      <a class="index-header" href="/2021/03/20/parsing/">Parsing</a>
+
+      <a href="/2021/03/20/parsing/" class="index-excerpt">
+        
+        
+          
+        
+        <div> CHOMSKY 文法
+ Type 0
+
+可以从任意多个符号产生任意多个符号
+
+, N E -&gt; and N
+ Type 1
+
+
+monotonic
+
+左侧符号不多于右侧符号
+
+
+
+context-sensitive
+
+左侧仅有一个非终结符，并且替换后顺序不变
+Name Comma Name End -&gt; Name and Name End means `Comma -&gt; and</div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>&nbsp;2021-03-20
+          </div>
+        
+        
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <div class="col-12 col-md-12 mx-auto index-info">
+      <a class="index-header" href="/2021/03/09/computer%20network/">computer network</a>
+
+      <a href="/2021/03/09/computer%20network/" class="index-excerpt">
+        
+        
+          
+        
+        <div> 如何连接Nodes到网络
+需要解决以下问题
+
+
+encoding
+将bits编码发送到传输媒介上
+
+
+framing
+将bits描绘成可以传送到终端节点的完整消息
+
+
+error detection
+由于frame在传输过程中可能出错，因此需要错误检测功能
+
+
+reliable delivery
+使链路看起来可靠，尽管有时会出错
+
+
+media access control
+链路可能被多个主机共</div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>&nbsp;2021-03-09
+          </div>
+        
+        
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <div class="col-12 col-md-12 mx-auto index-info">
+      <a class="index-header" href="/2021/02/19/os/">os</a>
+
+      <a href="/2021/02/19/os/" class="index-excerpt">
+        
+        
+          
+        
+        <div> 内存管理
+ 分页虚拟内存
+ TLB刷新
+
+
+AARCH64内核和应用程序使用不同页表
+
+页表地址分别存放在TTBR0_EL1和TTBR1_EL1
+系统调用无需切换页表
+
+
+
+x86_64唯一页表基址存放在CR3
+
+将内核映射到高地址
+避免系统调用TLB刷新开销
+
+
+
+ 如何降低TLB刷新开销
+
+
+为不同的页表打上标签
+
+TLB缓存项都有标签，切换页表不需要刷新TLB
+
+
+
+x86_64:PCID</div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>&nbsp;2021-02-19
+          </div>
+        
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/os/">os</a>
+            
+              <a href="/tags/operating-system/">operating system</a>
+            
+          </div>
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <div class="col-12 col-md-12 mx-auto index-info">
       <a class="index-header" href="/2021/01/25/lex/">lexcial</a>
 
       <a href="/2021/01/25/lex/" class="index-excerpt">
@@ -402,72 +591,19 @@ FILE* g_f = fopen(filenam</div>
     </div>
   </div>
 
-  <div class="row mx-auto index-card">
-    
-    
-    <div class="col-12 col-md-12 mx-auto index-info">
-      <a class="index-header" href="/2020/07/05/code%20template/">algorithm template</a>
-
-      <a href="/2020/07/05/code%20template/" class="index-excerpt">
-        
-        
-          
-        
-        <div> 模板题
- 0x00排序
- 快速排序
-给定你一个长度为n的整数数列。
-请你使用快速排序对这个数列按照从小到大进行排序。
-并将排好序的数列按顺序输出。
- 输入格式
-输入共两行，第一行包含整数 n。
-第二行包含 n 个整数（所有整数均在1−1091-10^{9}1−109范围内），表示整个数列。
- 输出格式
-输出共一行，包含 n 个整数，表示排好序的数列。
- 数据范围
-1≤n≤1000001≤n≤10</div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>&nbsp;2020-07-05
-          </div>
-        
-        
-        
-      </div>
-    </div>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <div class="col-12 col-md-12 mx-auto index-info">
-      <a class="index-header" href="/2020/07/03/hello-world/">Hello World</a>
-
-      <a href="/2020/07/03/hello-world/" class="index-excerpt">
-        
-        
-          
-        
-        <div>Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub.
- Quic</div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>&nbsp;2020-07-03
-          </div>
-        
-        
-        
-      </div>
-    </div>
-  </div>
 
 
+  <nav aria-label="navigation">
+    <span class="pagination" id="pagination">
+      <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/"><i class="iconfont icon-arrowright"></i></a>
+    </span>
+  </nav>
+  
+  <script>
+    for (ele of document.getElementById("pagination").getElementsByTagName("a")) {
+      ele.href += '#board';
+    }
+  </script>
 
 
 
