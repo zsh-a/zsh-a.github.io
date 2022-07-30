@@ -168,6 +168,274 @@
     
     
     <div class="col-12 col-md-12 mx-auto index-info">
+      <a class="index-header" href="/2022/07/28/recipes/">杂记</a>
+
+      <a href="/2022/07/28/recipes/" class="index-excerpt">
+        
+        
+          
+        
+        <div> linux
+
+关闭终端进程退出
+
+关闭终端时，虚拟终端进程给bash发送sighup， bash给所有子进程转发sighup
+用 &amp; 运行程序，然后ctrl+D退出终端，让bash读到EOF退出
+
+
+信号处理
+
+将信号加入task_struct的信号队列中
+从内核态返回时检查队列
+需要在用户态执行信号处理程序
+
+将进程的rip设为信号处理函数地址
+在用户态栈设置栈帧，将返回地址设为sig</div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>&nbsp;2022-07-28
+          </div>
+        
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/linux/">linux</a>
+            
+              <a href="/tags/%E6%9D%82%E8%AE%B0/">杂记</a>
+            
+          </div>
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <div class="col-12 col-md-12 mx-auto index-info">
+      <a class="index-header" href="/2022/07/18/distributed%20system/">distributed system</a>
+
+      <a href="/2022/07/18/distributed%20system/" class="index-excerpt">
+        
+        
+          
+        
+        <div>
+
+fault tolerance
+
+replicated servers
+
+
+
+consistency
+
+
+performance
+
+Load imbalance
+Slowest-of-N latency
+
+
+
+ GFS
+
+自动错误恢复
+用于大文件顺序访问
+
+ 架构
+
+coordinator：追踪文件名
+chunkservers：存储64 MB chunks
+每个chunk有3个副本
+
+ coo</div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>&nbsp;2022-07-18
+          </div>
+        
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/database/">database</a>
+            
+              <a href="/tags/distributed-system/">distributed system</a>
+            
+              <a href="/tags/db/">db</a>
+            
+          </div>
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <div class="col-12 col-md-12 mx-auto index-info">
+      <a class="index-header" href="/2022/07/14/db/">db</a>
+
+      <a href="/2022/07/14/db/" class="index-excerpt">
+        
+        
+          
+        
+        <div> 索引
+
+
+hash 索引
+
+
+B tree
+
+将sex放在索引数据中  CREATE INDEX btree_idx_age ON titanic_survivor(age) USING BTREE INCLUDE (sex);
+
+对节点修改树结构变化复杂，需要加锁
+不适合distinct value cardinality小数据
+
+
+
+跳表
+
+跳表通过一个概率值来决定是否需要添加上层节点，实现</div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>&nbsp;2022-07-14
+          </div>
+        
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/database/">database</a>
+            
+              <a href="/tags/db/">db</a>
+            
+          </div>
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <div class="col-12 col-md-12 mx-auto index-info">
+      <a class="index-header" href="/2022/06/04/code%20template/">algorithm template</a>
+
+      <a href="/2022/06/04/code%20template/" class="index-excerpt">
+        
+        
+          
+        
+        <div> 模板题
+ 0x00排序
+ 快速排序
+给定你一个长度为n的整数数列。
+请你使用快速排序对这个数列按照从小到大进行排序。
+并将排好序的数列按顺序输出。
+ 输入格式
+输入共两行，第一行包含整数 n。
+第二行包含 n 个整数（所有整数均在1−1091-10^{9}1−109范围内），表示整个数列。
+ 输出格式
+输出共一行，包含 n 个整数，表示排好序的数列。
+ 数据范围
+1≤n≤1000001≤n≤10</div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>&nbsp;2022-06-04
+          </div>
+        
+        
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <div class="col-12 col-md-12 mx-auto index-info">
+      <a class="index-header" href="/2022/06/04/computer%20network/">network</a>
+
+      <a href="/2022/06/04/computer%20network/" class="index-excerpt">
+        
+        
+          
+        
+        <div> tcp
+ 拥塞控制
+
+最大化时延带宽积
+
+时延带宽积=链路带宽×往返时延时延带宽积=链路带宽\times 往返时延时延带宽积=链路带宽×往返时延
+
+
+如何估计该数值?
+
+ cubic
+
+
+不断增加发送窗口，直到出现丢包
+
+加性增，乘性减
+
+
+
+不能区分拥塞丢包和错误丢包
+
+
+错误丢包率需要与发送窗口的平方成反比才能正常工作
+
+估计值偏小，不能占满资源
+
+
+
+bufferbloat（缓冲区膨胀）
+</div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>&nbsp;2022-06-04
+          </div>
+        
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/network/">network</a>
+            
+          </div>
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <div class="col-12 col-md-12 mx-auto index-info">
       <a class="index-header" href="/2021/03/28/linux%20network%20programming/">linux 网络编程</a>
 
       <a href="/2021/03/28/linux%20network%20programming/" class="index-excerpt">
@@ -235,53 +503,6 @@ Name Comma Name End -&gt; Name and Name End means `Comma -&gt; and</div>
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>&nbsp;2021-03-20
-          </div>
-        
-        
-        
-      </div>
-    </div>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <div class="col-12 col-md-12 mx-auto index-info">
-      <a class="index-header" href="/2021/03/09/computer%20network/">computer network</a>
-
-      <a href="/2021/03/09/computer%20network/" class="index-excerpt">
-        
-        
-          
-        
-        <div> 如何连接Nodes到网络
-需要解决以下问题
-
-
-encoding
-将bits编码发送到传输媒介上
-
-
-framing
-将bits描绘成可以传送到终端节点的完整消息
-
-
-error detection
-由于frame在传输过程中可能出错，因此需要错误检测功能
-
-
-reliable delivery
-使链路看起来可靠，尽管有时会出错
-
-
-media access control
-链路可能被多个主机共</div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>&nbsp;2021-03-09
           </div>
         
         
@@ -424,168 +645,6 @@ Committed : the data have been </div>
           </div>
         
         
-        
-      </div>
-    </div>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <div class="col-12 col-md-12 mx-auto index-info">
-      <a class="index-header" href="/2021/01/02/sql/">sql</a>
-
-      <a href="/2021/01/02/sql/" class="index-excerpt">
-        
-        
-          
-        
-        <div> SQL query
-
-Generate a Cartesian product of the relations listed in the from clause.
-Apply the predicates specified in the where clause on the result of Step 1.
-For each tuple in the result of Step 2,</div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>&nbsp;2021-01-02
-          </div>
-        
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/sql/">sql</a>
-            
-          </div>
-        
-      </div>
-    </div>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <div class="col-12 col-md-12 mx-auto index-info">
-      <a class="index-header" href="/2020/10/09/linux/">linux programing</a>
-
-      <a href="/2020/10/09/linux/" class="index-excerpt">
-        
-        
-          
-        
-        <div> Interaction With the Execution environment
- Using getopt_long
-#include &lt;getopt.h&gt;
-for example:
-$ program -h -v -o name
-const char* const short_options = &quot;ho:v&quot;;
-:indicate a argument f</div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>&nbsp;2020-10-09
-          </div>
-        
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/linux/">linux</a>
-            
-              <a href="/tags/os/">os</a>
-            
-          </div>
-        
-      </div>
-    </div>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <div class="col-12 col-md-12 mx-auto index-info">
-      <a class="index-header" href="/2020/08/19/raft/">raft implement notice</a>
-
-      <a href="/2020/08/19/raft/" class="index-excerpt">
-        
-        
-          
-        
-        <div>
-server should convert to follower and set currentTerm to be args's Term, when receive a RPC message
-when a follower is disconnected from cluster, connecting back later, it’s term is large than the ot</div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>&nbsp;2020-08-19
-          </div>
-        
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/distributed/">distributed</a>
-            
-              <a href="/tags/raft/">raft</a>
-            
-          </div>
-        
-      </div>
-    </div>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <div class="col-12 col-md-12 mx-auto index-info">
-      <a class="index-header" href="/2020/08/06/PE%20%E5%AF%BC%E5%85%A5%E8%A1%A8%E6%B3%A8%E5%85%A5/">PE import table inject</a>
-
-      <a href="/2020/08/06/PE%20%E5%AF%BC%E5%85%A5%E8%A1%A8%E6%B3%A8%E5%85%A5/" class="index-excerpt">
-        
-        
-          
-        
-        <div>导入表描述了exe执行时需要加载的dll
- create a test dll
-
-init() 和 destory()分别在dll加载和dll卸载时调用
-
-
-dll必须提供导出函数才会被加载
- 导入表结构
-
-表中地址均为RVA
- inject code
- read file
-
-DWORD ext_size = 0x1000; // 文件扩大的大小
-FILE* g_f = fopen(filenam</div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>&nbsp;2020-08-06
-          </div>
-        
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/PE/">PE</a>
-            
-          </div>
         
       </div>
     </div>

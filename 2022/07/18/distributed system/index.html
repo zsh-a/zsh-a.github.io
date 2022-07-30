@@ -17,7 +17,7 @@
   <meta name="description" content="">
   <meta name="author" content="John Doe">
   <meta name="keywords" content="">
-  <title>Parsing - Hexo</title>
+  <title>distributed system - Hexo</title>
 
   <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
 
@@ -153,8 +153,8 @@
               
   <div class="mt-3 post-meta">
     <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-    <time datetime="2021-03-20 20:55">
-      March 20, 2021 pm
+    <time datetime="2022-07-18 16:21">
+      July 18, 2022 pm
     </time>
   </div>
 
@@ -164,7 +164,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      255 字
+      1.1k 字
     </span>
   
 
@@ -174,7 +174,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      3
+      13
        分钟
     </span>
   
@@ -205,71 +205,306 @@
           <div class="post-content mx-auto" id="post">
             
             <article class="markdown-body">
-              <h2 id="chomsky-文法"><a class="markdownIt-Anchor" href="#chomsky-文法"></a> CHOMSKY 文法</h2>
-<h3 id="type-0"><a class="markdownIt-Anchor" href="#type-0"></a> Type 0</h3>
-<ul>
-<li>可以从<strong>任意多</strong>个符号产生<strong>任意多</strong>个符号</li>
-</ul>
-<p><code>, N E -&gt; and N</code></p>
-<h3 id="type-1"><a class="markdownIt-Anchor" href="#type-1"></a> Type 1</h3>
-<ul>
+              <ul>
 <li>
-<p><em>monotonic</em></p>
+<p>fault tolerance</p>
 <ul>
-<li>左侧符号不多于右侧符号</li>
+<li>replicated servers</li>
 </ul>
 </li>
 <li>
-<p><em>context-sensitive</em></p>
-<ul>
-<li>左侧仅有一个非终结符，并且替换后顺序不变</li>
-<li><code>Name Comma Name End -&gt; Name and Name End</code> means `Comma -&gt; and``</li>
-<li>context 不受影响</li>
-</ul>
-</li>
-</ul>
-<h3 id="type-2context-free"><a class="markdownIt-Anchor" href="#type-2context-free"></a> Type 2(context-free)</h3>
-<ul>
-<li>左侧仅有一个非终结符</li>
-</ul>
-<h4 id="extended-cf-grammars"><a class="markdownIt-Anchor" href="#extended-cf-grammars"></a> Extended CF grammars</h4>
-<ul>
-<li><code>Sequence -&gt; Something | Something Sequence</code> 可以写为 <code>Something^+</code></li>
-<li><code>Something^?</code> zero or one Something</li>
-</ul>
-<p><strong>Book grammar</strong></p>
-<pre><code class="hljs xl">B<span class="hljs-function"><span class="hljs-title">ook</span> -&gt;</span> Preface Chapter^+ Conclusion
-P<span class="hljs-function"><span class="hljs-title">reface</span> -&gt;</span> <span class="hljs-string">"PREFACE"</span> Paragraph+
-C<span class="hljs-function"><span class="hljs-title">hapter</span> -&gt;</span> <span class="hljs-string">"CHAPTER"</span> Number Paragraph^+
-P<span class="hljs-function"><span class="hljs-title">aragraph</span> -&gt;</span> Sentence^+
-S<span class="hljs-function"><span class="hljs-title">entence</span> -&gt;</span> ...
-C<span class="hljs-function"><span class="hljs-title">onclusion</span> -&gt;</span> <span class="hljs-string">"CONCLUSION"</span> Paragraph^+</code></pre>
-<h3 id="type-3-regular-grammarsre"><a class="markdownIt-Anchor" href="#type-3-regular-grammarsre"></a> Type 3 (regular grammars,RE)</h3>
-<ul>
-<li>
-<p>右侧只能包含一个非终结符，且该非终结符在最后</p>
+<p>consistency</p>
 </li>
 <li>
-<p>仅包含两个规则</p>
+<p>performance</p>
 <ul>
-<li>一个非终结符产生一个终结符</li>
-<li>一个非终结符产生一个终结符并接一个非终结符</li>
+<li>Load imbalance</li>
+<li>Slowest-of-N latency</li>
+</ul>
+</li>
+</ul>
+<h1 id="gfs"><a class="markdownIt-Anchor" href="#gfs"></a> GFS</h1>
+<ul>
+<li>自动错误恢复</li>
+<li>用于大文件顺序访问</li>
+</ul>
+<h2 id="架构"><a class="markdownIt-Anchor" href="#架构"></a> 架构</h2>
+<ul>
+<li>coordinator：追踪文件名</li>
+<li>chunkservers：存储64 MB chunks</li>
+<li>每个chunk有3个副本</li>
+</ul>
+<h3 id="coordinator-state"><a class="markdownIt-Anchor" href="#coordinator-state"></a> coordinator state</h3>
+<ul>
+<li>file name -&gt;
+<ul>
+<li>array of chunk handles (nv)</li>
+</ul>
+</li>
+<li>chunk handle -&gt;
+<ul>
+<li>version (nv)</li>
+<li>list of chunkservers (v)</li>
+<li>primary (v)</li>
+<li>lease time (v)</li>
+</ul>
+</li>
+</ul>
+<p>nv: state also written to disk</p>
+<h1 id="raft"><a class="markdownIt-Anchor" href="#raft"></a> Raft</h1>
+<ul>
+<li>一个容错系统依赖单一实体做出关键决策</li>
+<li>实现容错和test-and-set服务
+<ul>
+<li>复制：可能存在网络分区，多个brain
+<ul>
+<li>无法区分<strong>server crashed</strong>和<strong>network broken</strong></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="大多数投票"><a class="markdownIt-Anchor" href="#大多数投票"></a> 大多数投票</h2>
+<ul>
+<li>最多只有一个分区存在大多数，打破对称性</li>
+<li><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>2</mn><mi>f</mi><mo>+</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">2f+1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="mord">2</span><span class="mord mathdefault" style="margin-right:0.10764em;">f</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">1</span></span></span></span>个服务器能容忍<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>f</mi></mrow><annotation encoding="application/x-tex">f</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="mord mathdefault" style="margin-right:0.10764em;">f</span></span></span></span>个服务器失败</li>
+</ul>
+<h2 id="流程"><a class="markdownIt-Anchor" href="#流程"></a> 流程</h2>
+<ol>
+<li>client 发送command到leader</li>
+<li>leader 向log添加command</li>
+<li>leader 向followers发送AppendEntries RPCs</li>
+<li>followers向log添加command</li>
+<li>leader等待直到大多数回复<strong>committed</strong></li>
+<li>leader 执行该命令，回复client</li>
+<li>leader在下一次AppendEntries中捎带commit信息</li>
+<li>当leader commit时，followers执行Entry</li>
+</ol>
+<h3 id="leader选举"><a class="markdownIt-Anchor" href="#leader选举"></a> leader选举</h3>
+<ul>
+<li>
+<p>确保所有副本执行相同命令，相同顺序</p>
+</li>
+<li>
+<p>为leader确定顺序，new leader -&gt; new term</p>
+<ul>
+<li>一个term最多一个leader，可能没有leader</li>
 </ul>
 </li>
 <li>
-<p>e.g.</p>
+<p>leader选举时机</p>
 <ul>
-<li>&amp; == and</li>
-<li><code>Sentence -&gt; t | d | h | List</code></li>
-<li><code>List -&gt; t ListTail | d ListTail | h ListTai</code></li>
-<li><code>ListTail -&gt; , List | &amp;t | &amp;d | &amp;h</code></li>
-<li>可以简化为 <code>S -&gt; (([tdh],)*[tdh]&amp;)?[tdh]</code></li>
+<li>当没有收到<strong>election timeout</strong>消息时，增加<code>currentTerm</code>，尝试收集投票
+<ul>
+<li>可能导致无用选举</li>
 </ul>
 </li>
 </ul>
-<h3 id="type-4finite-choice"><a class="markdownIt-Anchor" href="#type-4finite-choice"></a> Type 4(finite-choice)</h3>
+</li>
+<li>
+<p>如何确保一个term中只有一个leader?</p>
 <ul>
-<li>右边不包含非终结符</li>
+<li>leader必须获得大多数票</li>
+<li>每个server在一个term仅会投一票
+<ul>
+<li>若自己为候选人，则投给自己</li>
+<li>否则，投给第一个要求选票者</li>
+</ul>
+</li>
+<li>只有一个server能够获得大多数票</li>
+</ul>
+</li>
+<li>
+<p>server如何知道最新选举的leader?</p>
+<ul>
+<li>leader 发送有最大term 的<strong>AppendEntries</strong>心跳消息</li>
+<li>如果收到<strong>AppendEntries</strong>，则知道最新的leader</li>
+<li>心跳消息会抑制新的选举启动
+<ul>
+<li>必须小于leader选举timeout</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>可能出现选票分散情况，leader选举一致失败</p>
+<ul>
+<li>为选举timeout增加随机性</li>
+<li><strong>随机性打破对称性</strong></li>
+<li>随机性延迟在网络协议中经常出现</li>
+</ul>
+</li>
+<li>
+<p>如何选择选举timeout?</p>
+<ul>
+<li>至少几个心跳间隔，避免不需要的选举</li>
+<li>随机部分足够长，确保有一个能成功</li>
+<li>足够短，确保快速响应</li>
+</ul>
+</li>
+<li>
+<p>如果旧的leader没有意识到新的leader?</p>
+<ul>
+<li>可能旧leader没有收到选举消息</li>
+<li>可能不在大多数分区内</li>
+<li>旧leader将会收到更新的term 在AppendEntries中并下台，或者不能得到大多数回复，所以不会commit或执行新的log</li>
+<li>少数部分可能收到旧leader的AppendEntries，可能导致log分叉</li>
+</ul>
+</li>
+</ul>
+<h3 id="log"><a class="markdownIt-Anchor" href="#log"></a> log</h3>
+<ul>
+<li>
+<p>leader选举后client仅与leader交互</p>
+</li>
+<li>
+<p>一个leader失败后可能的异常情况</p>
+<ul>
+<li>不一致副本</li>
+<li>丢失操作</li>
+<li>重复操作</li>
+</ul>
+</li>
+<li>
+<p>一个log entry仅能执行同一个command</p>
+</li>
+<li>
+<p>强制followers与新leader的log保持一致</p>
+<ul>
+<li>每个followers删除log尾部与leader不一致的部分</li>
+</ul>
+</li>
+<li>
+<p>确保选择的leader具有所有已提交的log</p>
+<ul>
+<li>RequestVote handler 仅将票投给最新的log
+<ul>
+<li>在最后的log entry 有更大的term</li>
+<li>相同的last term 并且相同或更长的log</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="持久化"><a class="markdownIt-Anchor" href="#持久化"></a> 持久化</h3>
+<ul>
+<li>
+<p>修复策略</p>
+<ul>
+<li>使用一个新server替换
+<ul>
+<li>传输所有log</li>
+</ul>
+</li>
+<li>重启crashed server
+<ul>
+<li>恢复持久化的状态</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>持久化状态</p>
+<ul>
+<li><code>log[]</code>
+<ul>
+<li>确保committed log 保持一致</li>
+</ul>
+</li>
+<li><code>votedFor</code>
+<ul>
+<li>避免投出多票</li>
+</ul>
+</li>
+<li><code>currentTerm</code></li>
+</ul>
+</li>
+<li>
+<p>优化磁盘写入</p>
+<ul>
+<li>batch</li>
+<li>battery-backed RAM</li>
+<li>lazy</li>
+</ul>
+</li>
+<li>
+<p>crash+reboot 恢复</p>
+<ul>
+<li>redo 整个log
+<ul>
+<li>速度慢</li>
+</ul>
+</li>
+<li>使用snapshot，redo snapshot 之后的log</li>
+</ul>
+</li>
+</ul>
+<h3 id="log-压缩-和-snapshots"><a class="markdownIt-Anchor" href="#log-压缩-和-snapshots"></a> log 压缩 和 Snapshots</h3>
+<ul>
+<li>
+<p>不能丢弃的log</p>
+<ul>
+<li>committed 但未执行</li>
+<li>不清楚是否committed</li>
+</ul>
+</li>
+<li>
+<p>周期性创建<strong>snapshot</strong></p>
+<ul>
+<li>持久化raft状态和snapshot</li>
+<li>丢弃snapshot之前的log</li>
+</ul>
+</li>
+<li>
+<p>如果follower的log处于leader的log之前</p>
+<ul>
+<li>follower离线一段时间，leader已经丢弃之前的log</li>
+<li><code>InstallSnapshot</code> RPC，设置状态</li>
+</ul>
+</li>
+<li>
+<p>对于big DB，</p>
+</li>
+<li>
+<p>数据以B-Tree存储在disk中</p>
+<ul>
+<li>无需显式Snapshot，因为数据已经存在</li>
+</ul>
+</li>
+</ul>
+<h3 id="linearizability"><a class="markdownIt-Anchor" href="#linearizability"></a> linearizability</h3>
+<ul>
+<li>强一致性，与但个server行为一致</li>
+<li>所有操作存在一个全序关系匹配实际时间，并且每个读操作都会最新写入的值</li>
+<li>而顺序一致性仅要求本地的顺序性，偏序关系</li>
+</ul>
+<h3 id="重复rpc检测"><a class="markdownIt-Anchor" href="#重复rpc检测"></a> 重复RPC检测</h3>
+<ul>
+<li>
+<p>如果RPC超时</p>
+<ul>
+<li>server is dead or request was dropped：re-send</li>
+<li>server executed, but reply was lost: re-send is dangerous</li>
+</ul>
+</li>
+<li>
+<p>使用k/v维护已执行的RPC</p>
+</li>
+</ul>
+<h3 id="只读操作"><a class="markdownIt-Anchor" href="#只读操作"></a> 只读操作</h3>
+<ul>
+<li>
+<p>Raft必须commit只读操作log，因为可能出现split brain</p>
+</li>
+<li>
+<p>减少只读操作commit</p>
+<ul>
+<li>leases，设置时间限制</li>
+<li>当leader每次得到<strong>AppendEntries</strong>大多数时，可以设置一段时间不需要将只读操作加入log</li>
+<li>a new leader不能执行put操作知道lease过期</li>
+<li>followers 记录最后一次响应AppendEntries的时间，并将其告诉new leader</li>
+</ul>
+</li>
 </ul>
 
             </article>
@@ -277,6 +512,17 @@ C<span class="hljs-function"><span class="hljs-title">onclusion</span> -&gt;</sp
             <div>
               <div class="post-metas mb-3">
                 
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/database/">database</a>
+                    
+                      <a class="hover-with-bg" href="/tags/distributed-system/">distributed system</a>
+                    
+                      <a class="hover-with-bg" href="/tags/db/">db</a>
+                    
+                  </div>
                 
               </div>
               
@@ -287,9 +533,9 @@ C<span class="hljs-function"><span class="hljs-title">onclusion</span> -&gt;</sp
                   <div class="post-prev col-6">
                     
                     
-                      <a href="/2021/03/28/linux%20network%20programming/">
+                      <a href="/2022/07/28/recipes/">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">linux 网络编程</span>
+                        <span class="hidden-mobile">杂记</span>
                         <span class="visible-mobile">Previous</span>
                       </a>
                     
@@ -297,8 +543,8 @@ C<span class="hljs-function"><span class="hljs-title">onclusion</span> -&gt;</sp
                   <div class="post-next col-6">
                     
                     
-                      <a href="/2021/02/19/os/">
-                        <span class="hidden-mobile">os</span>
+                      <a href="/2022/07/14/db/">
+                        <span class="hidden-mobile">db</span>
                         <span class="visible-mobile">Next</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
@@ -437,7 +683,7 @@ C<span class="hljs-function"><span class="hljs-title">onclusion</span> -&gt;</sp
     var typed = new Typed('#subtitle', {
       strings: [
         '  ',
-        "Parsing&nbsp;",
+        "distributed system&nbsp;",
       ],
       cursorChar: "_",
       typeSpeed: 70,

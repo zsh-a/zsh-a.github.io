@@ -17,7 +17,7 @@
   <meta name="description" content="">
   <meta name="author" content="John Doe">
   <meta name="keywords" content="">
-  <title>Parsing - Hexo</title>
+  <title>network - Hexo</title>
 
   <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
 
@@ -153,8 +153,8 @@
               
   <div class="mt-3 post-meta">
     <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-    <time datetime="2021-03-20 20:55">
-      March 20, 2021 pm
+    <time datetime="2022-06-04 23:24">
+      June 4, 2022 pm
     </time>
   </div>
 
@@ -164,7 +164,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      255 字
+      311 字
     </span>
   
 
@@ -205,78 +205,92 @@
           <div class="post-content mx-auto" id="post">
             
             <article class="markdown-body">
-              <h2 id="chomsky-文法"><a class="markdownIt-Anchor" href="#chomsky-文法"></a> CHOMSKY 文法</h2>
-<h3 id="type-0"><a class="markdownIt-Anchor" href="#type-0"></a> Type 0</h3>
+              <h1 id="tcp"><a class="markdownIt-Anchor" href="#tcp"></a> tcp</h1>
+<h2 id="拥塞控制"><a class="markdownIt-Anchor" href="#拥塞控制"></a> 拥塞控制</h2>
 <ul>
-<li>可以从<strong>任意多</strong>个符号产生<strong>任意多</strong>个符号</li>
+<li>最大化时延带宽积
+<ul>
+<li><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi mathvariant="normal">时</mi><mi mathvariant="normal">延</mi><mi mathvariant="normal">带</mi><mi mathvariant="normal">宽</mi><mi mathvariant="normal">积</mi><mo>=</mo><mi mathvariant="normal">链</mi><mi mathvariant="normal">路</mi><mi mathvariant="normal">带</mi><mi mathvariant="normal">宽</mi><mo>×</mo><mi mathvariant="normal">往</mi><mi mathvariant="normal">返</mi><mi mathvariant="normal">时</mi><mi mathvariant="normal">延</mi></mrow><annotation encoding="application/x-tex">时延带宽积=链路带宽\times 往返时延</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.36687em;vertical-align:0em;"></span><span class="mord cjk_fallback">时</span><span class="mord cjk_fallback">延</span><span class="mord cjk_fallback">带</span><span class="mord cjk_fallback">宽</span><span class="mord cjk_fallback">积</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.66666em;vertical-align:-0.08333em;"></span><span class="mord cjk_fallback">链</span><span class="mord cjk_fallback">路</span><span class="mord cjk_fallback">带</span><span class="mord cjk_fallback">宽</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0em;vertical-align:0em;"></span><span class="mord cjk_fallback">往</span><span class="mord cjk_fallback">返</span><span class="mord cjk_fallback">时</span><span class="mord cjk_fallback">延</span></span></span></span></li>
 </ul>
-<p><code>, N E -&gt; and N</code></p>
-<h3 id="type-1"><a class="markdownIt-Anchor" href="#type-1"></a> Type 1</h3>
+</li>
+<li>如何估计该数值?</li>
+</ul>
+<h3 id="cubic"><a class="markdownIt-Anchor" href="#cubic"></a> cubic</h3>
 <ul>
 <li>
-<p><em>monotonic</em></p>
+<p>不断增加发送窗口，直到出现丢包</p>
 <ul>
-<li>左侧符号不多于右侧符号</li>
+<li>加性增，乘性减</li>
 </ul>
 </li>
 <li>
-<p><em>context-sensitive</em></p>
-<ul>
-<li>左侧仅有一个非终结符，并且替换后顺序不变</li>
-<li><code>Name Comma Name End -&gt; Name and Name End</code> means `Comma -&gt; and``</li>
-<li>context 不受影响</li>
-</ul>
-</li>
-</ul>
-<h3 id="type-2context-free"><a class="markdownIt-Anchor" href="#type-2context-free"></a> Type 2(context-free)</h3>
-<ul>
-<li>左侧仅有一个非终结符</li>
-</ul>
-<h4 id="extended-cf-grammars"><a class="markdownIt-Anchor" href="#extended-cf-grammars"></a> Extended CF grammars</h4>
-<ul>
-<li><code>Sequence -&gt; Something | Something Sequence</code> 可以写为 <code>Something^+</code></li>
-<li><code>Something^?</code> zero or one Something</li>
-</ul>
-<p><strong>Book grammar</strong></p>
-<pre><code class="hljs xl">B<span class="hljs-function"><span class="hljs-title">ook</span> -&gt;</span> Preface Chapter^+ Conclusion
-P<span class="hljs-function"><span class="hljs-title">reface</span> -&gt;</span> <span class="hljs-string">"PREFACE"</span> Paragraph+
-C<span class="hljs-function"><span class="hljs-title">hapter</span> -&gt;</span> <span class="hljs-string">"CHAPTER"</span> Number Paragraph^+
-P<span class="hljs-function"><span class="hljs-title">aragraph</span> -&gt;</span> Sentence^+
-S<span class="hljs-function"><span class="hljs-title">entence</span> -&gt;</span> ...
-C<span class="hljs-function"><span class="hljs-title">onclusion</span> -&gt;</span> <span class="hljs-string">"CONCLUSION"</span> Paragraph^+</code></pre>
-<h3 id="type-3-regular-grammarsre"><a class="markdownIt-Anchor" href="#type-3-regular-grammarsre"></a> Type 3 (regular grammars,RE)</h3>
-<ul>
-<li>
-<p>右侧只能包含一个非终结符，且该非终结符在最后</p>
+<p>不能区分<strong>拥塞丢包</strong>和<strong>错误丢包</strong></p>
 </li>
 <li>
-<p>仅包含两个规则</p>
+<p>错误丢包率需要与发送窗口的平方成反比才能正常工作</p>
 <ul>
-<li>一个非终结符产生一个终结符</li>
-<li>一个非终结符产生一个终结符并接一个非终结符</li>
+<li>估计值偏小，不能占满资源</li>
 </ul>
 </li>
 <li>
-<p>e.g.</p>
+<p>bufferbloat（缓冲区膨胀）</p>
 <ul>
-<li>&amp; == and</li>
-<li><code>Sentence -&gt; t | d | h | List</code></li>
-<li><code>List -&gt; t ListTail | d ListTail | h ListTai</code></li>
-<li><code>ListTail -&gt; , List | &amp;t | &amp;d | &amp;h</code></li>
-<li>可以简化为 <code>S -&gt; (([tdh],)*[tdh]&amp;)?[tdh]</code></li>
+<li>网络中节点存在buffer</li>
+<li>估计值偏大</li>
+<li>增加网络延迟</li>
+<li>缓冲区被填满而丢包</li>
 </ul>
 </li>
 </ul>
-<h3 id="type-4finite-choice"><a class="markdownIt-Anchor" href="#type-4finite-choice"></a> Type 4(finite-choice)</h3>
+<h3 id="bbr"><a class="markdownIt-Anchor" href="#bbr"></a> BBR</h3>
 <ul>
-<li>右边不包含非终结符</li>
+<li>
+<p>不考虑丢包</p>
+</li>
+<li>
+<p>分别估计带宽和时延</p>
+<ul>
+<li>无法同时测准</li>
 </ul>
+</li>
+<li>
+<p>交替测量带宽和延迟</p>
+<ul>
+<li>用一段时间内的带宽极大值和延迟极小值作为估计值</li>
+</ul>
+</li>
+</ul>
+<ol>
+<li>慢启动
+<ul>
+<li>指数增长发送速率，将通道占满</li>
+<li>如果网络中有buffer，把缓冲区填满才会放弃</li>
+</ul>
+</li>
+<li>排空（drain）
+<ul>
+<li>指数降低发送速率，buffer中的包会被慢慢排空，直到往返延迟不再降低</li>
+</ul>
+</li>
+</ol>
+<ul>
+<li>充分利用带宽，适合高延迟、高带宽的链路</li>
+<li>降低buffer的占用率，从而降低延迟</li>
+</ul>
+<h1 id="quic"><a class="markdownIt-Anchor" href="#quic"></a> QUIC</h1>
 
             </article>
             <hr>
             <div>
               <div class="post-metas mb-3">
                 
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/network/">network</a>
+                    
+                  </div>
                 
               </div>
               
@@ -287,9 +301,9 @@ C<span class="hljs-function"><span class="hljs-title">onclusion</span> -&gt;</sp
                   <div class="post-prev col-6">
                     
                     
-                      <a href="/2021/03/28/linux%20network%20programming/">
+                      <a href="/2022/06/04/code%20template/">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">linux 网络编程</span>
+                        <span class="hidden-mobile">algorithm template</span>
                         <span class="visible-mobile">Previous</span>
                       </a>
                     
@@ -297,8 +311,8 @@ C<span class="hljs-function"><span class="hljs-title">onclusion</span> -&gt;</sp
                   <div class="post-next col-6">
                     
                     
-                      <a href="/2021/02/19/os/">
-                        <span class="hidden-mobile">os</span>
+                      <a href="/2021/03/28/linux%20network%20programming/">
+                        <span class="hidden-mobile">linux 网络编程</span>
                         <span class="visible-mobile">Next</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
@@ -437,7 +451,7 @@ C<span class="hljs-function"><span class="hljs-title">onclusion</span> -&gt;</sp
     var typed = new Typed('#subtitle', {
       strings: [
         '  ',
-        "Parsing&nbsp;",
+        "network&nbsp;",
       ],
       cursorChar: "_",
       typeSpeed: 70,
