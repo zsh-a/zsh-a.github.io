@@ -164,7 +164,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      311 字
+      591 字
     </span>
   
 
@@ -174,7 +174,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      3
+      6
        分钟
     </span>
   
@@ -278,6 +278,52 @@
 <li>降低buffer的占用率，从而降低延迟</li>
 </ul>
 <h1 id="quic"><a class="markdownIt-Anchor" href="#quic"></a> QUIC</h1>
+<h2 id="动机"><a class="markdownIt-Anchor" href="#动机"></a> 动机</h2>
+<ul>
+<li>TCP需要至少一个rtt握手，tls添加了两个rtt</li>
+<li>队头阻塞时延</li>
+<li>重传模糊
+<ul>
+<li>重传的tcp段有相同的序列号</li>
+<li>接收到的ACK不能区分原始包和重传包</li>
+<li>采样RTT不准确</li>
+<li>通过昂贵的timeout检测重传丢失</li>
+</ul>
+</li>
+</ul>
+<h2 id="设计"><a class="markdownIt-Anchor" href="#设计"></a> 设计</h2>
+<h3 id="连接建立"><a class="markdownIt-Anchor" href="#连接建立"></a> 连接建立</h3>
+<ul>
+<li>当成功握手之后，client缓存<strong>origin</strong>信息</li>
+<li>接下来的连接相同的origin，client能够无需rtt建立加密连接
+<ul>
+<li>数据可以立即发送无需等待server回复</li>
+<li>0-rtt 握手</li>
+</ul>
+</li>
+<li>使用Diffie-Hellman密钥交换算法</li>
+</ul>
+<h3 id="初始握手"><a class="markdownIt-Anchor" href="#初始握手"></a> 初始握手</h3>
+<ol start="0">
+<li>server配置长期密钥对config（p,g,K_pub）</li>
+<li>client发送hello到server</li>
+<li>server回复config</li>
+<li>client收到后生成随机数并计算公钥和对称密钥</li>
+<li>client将公钥和加密数据发送给server</li>
+<li>server收到后计算对称密钥</li>
+<li>双方通过各自的额外公钥计算前向安全的通信密钥</li>
+</ol>
+<h3 id="再次连接"><a class="markdownIt-Anchor" href="#再次连接"></a> 再次连接</h3>
+<ul>
+<li>client已经缓存了config，直接从step.3 开始</li>
+<li>一次一密</li>
+</ul>
+<h3 id="流复用"><a class="markdownIt-Anchor" href="#流复用"></a> 流复用</h3>
+<ul>
+<li>一个连接可以存在多个流，一个udp包丢失仅会影响该包中的流</li>
+<li>stream IDs标识</li>
+<li></li>
+</ul>
 
             </article>
             <hr>

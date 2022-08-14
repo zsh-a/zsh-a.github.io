@@ -17,7 +17,7 @@
   <meta name="description" content="">
   <meta name="author" content="John Doe">
   <meta name="keywords" content="">
-  <title>杂记 - Hexo</title>
+  <title>CRDT for json - Hexo</title>
 
   <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
 
@@ -153,8 +153,8 @@
               
   <div class="mt-3 post-meta">
     <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-    <time datetime="2022-07-28 18:18">
-      July 28, 2022 pm
+    <time datetime="2022-08-04 16:21">
+      August 4, 2022 pm
     </time>
   </div>
 
@@ -164,7 +164,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      1.1k 字
+      112 字
     </span>
   
 
@@ -174,7 +174,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      13
+      1
        分钟
     </span>
   
@@ -205,274 +205,51 @@
           <div class="post-content mx-auto" id="post">
             
             <article class="markdown-body">
-              <h1 id="linux"><a class="markdownIt-Anchor" href="#linux"></a> linux</h1>
+              <h1 id="json-模型"><a class="markdownIt-Anchor" href="#json-模型"></a> JSON 模型</h1>
 <ul>
-<li>关闭终端进程退出
+<li>树结构</li>
+<li>包含两种分支节点
 <ul>
-<li>关闭终端时，虚拟终端进程给bash发送sighup， bash给所有子进程转发sighup</li>
-<li>用 &amp; 运行程序，然后ctrl+D退出终端，让bash读到EOF退出</li>
+<li>Map
+<ul>
+<li>子节点无序</li>
+<li>key : string</li>
 </ul>
 </li>
-<li>信号处理
+<li>List
 <ul>
-<li>将信号加入<code>task_struct</code>的信号队列中</li>
-<li>从内核态返回时检查队列</li>
-<li>需要在用户态执行信号处理程序
-<ul>
-<li>将进程的<code>rip</code>设为信号处理函数地址</li>
-<li>在用户态栈设置栈帧，将返回地址设为<code>sigreturn()</code>系统调用</li>
-<li><code>sigreturn()</code>恢复进程的执行状态</li>
+<li>子节点有序</li>
 </ul>
 </li>
 </ul>
 </li>
-<li>shell信号处理<br />
-<img src="../image/recipes/process-groups-sessions.png" srcset="/img/loading.gif" alt="" /></li>
-</ul>
-<h1 id="并发"><a class="markdownIt-Anchor" href="#并发"></a> 并发</h1>
-<h2 id="多处理器"><a class="markdownIt-Anchor" href="#多处理器"></a> 多处理器</h2>
+<li>叶节点
 <ul>
-<li>原子性丧失</li>
-<li>顺序写丧失
-<ul>
-<li>按照单线程优化代码</li>
-<li>保证对内存的最终一致性</li>
-<li>实验源代码按顺序翻译
-<ul>
-<li><code>asm volatile (&quot;&quot;:::&quot;memory&quot;);</code>,内存此时可能会被修改</li>
-<li>使用<code>volatile</code>变量</li>
+<li>不可变</li>
+<li>string</li>
+<li>number</li>
+<li>boolean</li>
+<li>null</li>
 </ul>
 </li>
 </ul>
-</li>
-<li>可见性丧失
+<h1 id="operational-transformation"><a class="markdownIt-Anchor" href="#operational-transformation"></a> Operational Transformation</h1>
+<h2 id="应用"><a class="markdownIt-Anchor" href="#应用"></a> 应用</h2>
 <ul>
-<li>
-<p>cpu把所有指令翻译为更小的<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>μ</mi></mrow><annotation encoding="application/x-tex">\mu</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.19444em;"></span><span class="mord mathdefault">μ</span></span></span></span>ops</p>
-</li>
-<li>
-<p>fetch -&gt; issue -&gt; execuate -&gt; commit</p>
-</li>
-<li>
-<p>维护<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>μ</mi></mrow><annotation encoding="application/x-tex">\mu</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.19444em;"></span><span class="mord mathdefault">μ</span></span></span></span>ops的有向无环图</p>
-</li>
-<li>
-<p>每个周期取出多条<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>μ</mi></mrow><annotation encoding="application/x-tex">\mu</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.19444em;"></span><span class="mord mathdefault">μ</span></span></span></span>ops同时执行</p>
-</li>
-<li>
-<p><code>mfence</code>将cpu的write buffer写入共享内存</p>
-</li>
-<li>
-<p><strong>内存序用于限制cpu对指令的重排程度，防止单线程指令在多线程下出现错误</strong></p>
-</li>
-<li>
-<p>c++内存模型</p>
+<li>Google docs</li>
+</ul>
+<h2 id="缺陷"><a class="markdownIt-Anchor" href="#缺陷"></a> 缺陷</h2>
 <ul>
-<li><code>memory_order_seq_cst</code>
+<li>不支持树结构</li>
+<li>一些算法支持nested order lists，不支持key-value maps</li>
+<li>Scalability 差</li>
+<li>依赖单服务器决定全序关系</li>
+<li><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><msup><mi>N</mi><mn>2</mn></msup><mi>k</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(N^2k)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.064108em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord"><span class="mord mathdefault" style="margin-right:0.10903em;">N</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mord mathdefault" style="margin-right:0.03148em;">k</span><span class="mclose">)</span></span></span></span></li>
+</ul>
+<h1 id="crdt"><a class="markdownIt-Anchor" href="#crdt"></a> CRDT</h1>
 <ul>
-<li><code>atomic</code>操作默认参数，要求底层提供顺序一致性模型，不存在指令重排</li>
-</ul>
-</li>
-<li><code>memory_order_release/acquire/consume</code>
-<ul>
-<li>允许cpu或编译器做一定的指令重排，可能产生<strong>wr</strong>,<strong>ww</strong>乱序，需要手动使用<code>release</code>和<code>acquire</code>避免问题</li>
-</ul>
-</li>
-<li><code>memory_order_relaxed</code>
-<ul>
-<li>允许任何重排</li>
-</ul>
-</li>
-<li><code>memory_order_release</code>: store operation
-<ul>
-<li>保证本行代码之前，任何对内存的读写操作，不能放到本行后面执行</li>
-</ul>
-</li>
-<li><code>memory_order_acquire</code> : load operation
-<ul>
-<li>保证在本行代码之后，任何对内存的读写操作，不能放到本行之前</li>
-</ul>
-</li>
-<li>compiler barrier
-<ul>
-<li><code>asm volatile(&quot;&quot;: : :&quot;memory&quot;);</code></li>
-<li><code>std::atomic_thread_fence(std::memory_order_acquire);</code></li>
-</ul>
-</li>
-<li>cpu fence：StoreLoad需要
-<ul>
-<li><code>asm volatile(&quot;mfence&quot; ::: &quot;memory&quot;);</code></li>
-<li><code>asm volatile(&quot;lock; addl $0,0(%%rsp)&quot; ::: &quot;memory&quot;, &quot;cc&quot;);</code></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<h2 id="互斥"><a class="markdownIt-Anchor" href="#互斥"></a> 互斥</h2>
-<ul>
-<li>
-<p>困难</p>
-<ul>
-<li>不能同时读/写共享内存</li>
-</ul>
-</li>
-<li>
-<p>x64 <code>lock</code> 前缀</p>
-<ul>
-<li>所有<code>lock</code>指令全序关系</li>
-<li><code>lock</code>指令之前的内存写入都可见</li>
-<li>486：锁总线</li>
-<li>对cache line加锁</li>
-</ul>
-</li>
-<li>
-<p>自旋锁</p>
-<ul>
-<li>触发cpu之间的缓存同步，增加延迟</li>
-<li>利用率低</li>
-<li>Scalability差</li>
-<li>获得自旋锁的线程可能被操作系统切换出去</li>
-<li>用于临界区几乎不拥堵，操作系统内核的并发数据结构</li>
-</ul>
-</li>
-<li>
-<p>互斥锁</p>
-<ul>
-<li>把锁放到操作系统中</li>
-<li>加锁失败，切换到其他线程</li>
-</ul>
-</li>
-<li>
-<p>Futex = Spin + Mutex</p>
-<ul>
-<li>先在用户空间自旋</li>
-<li>如果获得锁，直接进入</li>
-<li>未能获得锁，系统调用</li>
-<li>解锁以后也需要系统调用
-<ul>
-<li>优化：仅当出现锁拥堵时，进入内核</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<h2 id="同步"><a class="markdownIt-Anchor" href="#同步"></a> 同步</h2>
-<ul>
-<li>
-<p>线程同步：<strong>在某个时间点共同达到互相已知的状态</strong></p>
-</li>
-<li>
-<p>条件变量</p>
-<ul>
-<li>等待某个条件成立</li>
-<li>把自旋变为睡眠</li>
-<li>生产者消费者
-<ul>
-<li>2个条件变量，防止同类唤醒/notify_all()</li>
-</ul>
-</li>
-<li>面试题<br />
-有三种线程，分别打印 &lt;, &gt;, 和 _ 对这些线程进行同步，使得打印出的序列总是 &lt;&gt;&lt;_ 和 &gt;&lt;&gt;_ 组合
-<ul>
-<li>考虑打印每种字符的条件(状态机)</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>
-<p>信号量</p>
-<ul>
-<li>带计数器的互斥锁</li>
-</ul>
-</li>
-<li>
-<p>哲学家吃饭问题</p>
-<ul>
-<li>通用的解决方法
-<ul>
-<li>使用条件变量等待两个叉子同时可用（分布式同步）</li>
-<li>生产者/消费者：集中式管理（集中式同步）
-<ul>
-<li>分布式系统常用解决思路</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>
-<p>考虑workload，再优化</p>
-</li>
-</ul>
-<h1 id="bug"><a class="markdownIt-Anchor" href="#bug"></a> BUG</h1>
-<ul>
-<li>防御性编程：assert</li>
-</ul>
-<h2 id="死锁"><a class="markdownIt-Anchor" href="#死锁"></a> 死锁</h2>
-<ul>
-<li>AA-Deadlock
-<ul>
-<li>spinlock时发生中断</li>
-<li>在不该打开中断时打开中断</li>
-<li>在不该切换时执行了yield()</li>
-</ul>
-</li>
-<li>ABBA-Deadlock<pre><code class="hljs c++"><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">swap</span><span class="hljs-params">(<span class="hljs-keyword">int</span> i, <span class="hljs-keyword">int</span> j)</span> </span>&#123;
-  spin_lock(&amp;lock[i]);
-  spin_lock(&amp;lock[j]);
-  arr[i] = <span class="hljs-literal">NULL</span>;
-  arr[j] = arr[i];
-  spin_unlock(&amp;lock[j]);
-  spin_unlock(&amp;lock[i]);
-&#125;</code></pre>
-swap(1,2);swap(2,3);swap(3,1)</li>
-</ul>
-<h3 id="避免死锁"><a class="markdownIt-Anchor" href="#避免死锁"></a> 避免死锁</h3>
-<ul>
-<li>AA-Deadlock
-<ul>
-<li>防御性编程</li>
-<li><code>if (holding(lk)) panic();</code></li>
-</ul>
-</li>
-<li>ABBA-Deadlock
-<ul>
-<li>严格按照固定的顺序获得所有锁 (lock ordering; 消除 “循环等待”)</li>
-</ul>
-</li>
-</ul>
-<h2 id="应对"><a class="markdownIt-Anchor" href="#应对"></a> 应对</h2>
-<ul>
-<li>
-<p>Lockdep: 运行时的死锁检查</p>
-<ul>
-<li>为每一个锁确定唯一的 “allocation site”</li>
-<li>assert: 同一个 allocation site 的锁存在全局唯一的上锁顺序</li>
-<li>动态维护一个图结构</li>
-</ul>
-</li>
-<li>
-<p>ThreadSanitizer: 运行时的数据竞争检查</p>
-<ul>
-<li>为所有事件建立 happens-before 关系图</li>
-<li>如果两个写操作之间没有路径 -&gt; 数据竞争</li>
-</ul>
-</li>
-<li>
-<p>动态程序分析：Sanitizers</p>
-<ul>
-<li><a href="https://clang.llvm.org/docs/AddressSanitizer.html" target="_blank" rel="noopener">AddressSanitizer</a> :非法内存访问
-<ul>
-<li>Buffer (heap/stack/global) overflow, use-after-free, use-after-return, double-free, …</li>
-</ul>
-</li>
-<li><a href="https://clang.llvm.org/docs/UndefinedBehaviorSanitizer.html" target="_blank" rel="noopener">ThreadSanitizer</a>:数据竞争</li>
-<li><a href="https://clang.llvm.org/docs/MemorySanitizer.html" target="_blank" rel="noopener">MemorySanitizer</a>: 未初始化的读取</li>
-<li><a href="https://clang.llvm.org/docs/UndefinedBehaviorSanitizer.html" target="_blank" rel="noopener">UBSanitizer</a>: undefined behavior</li>
-</ul>
-</li>
+<li>支持并发修改，保证并发更新收敛</li>
+<li>通过添加一些元数据</li>
 </ul>
 
             </article>
@@ -484,9 +261,9 @@ swap(1,2);swap(2,3);swap(3,1)</li>
                   <div class="post-meta">
                     <i class="iconfont icon-tags"></i>
                     
-                      <a class="hover-with-bg" href="/tags/linux/">linux</a>
+                      <a class="hover-with-bg" href="/tags/crdt/">crdt</a>
                     
-                      <a class="hover-with-bg" href="/tags/%E6%9D%82%E8%AE%B0/">杂记</a>
+                      <a class="hover-with-bg" href="/tags/json/">json</a>
                     
                   </div>
                 
@@ -499,18 +276,12 @@ swap(1,2);swap(2,3);swap(3,1)</li>
                   <div class="post-prev col-6">
                     
                     
-                      <a href="/2022/08/04/crdt_json/">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">CRDT for json</span>
-                        <span class="visible-mobile">Previous</span>
-                      </a>
-                    
                   </div>
                   <div class="post-next col-6">
                     
                     
-                      <a href="/2022/07/18/distributed%20system/">
-                        <span class="hidden-mobile">distributed system</span>
+                      <a href="/2022/07/28/recipes/">
+                        <span class="hidden-mobile">杂记</span>
                         <span class="visible-mobile">Next</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
@@ -649,7 +420,7 @@ swap(1,2);swap(2,3);swap(3,1)</li>
     var typed = new Typed('#subtitle', {
       strings: [
         '  ',
-        "杂记&nbsp;",
+        "CRDT for json&nbsp;",
       ],
       cursorChar: "_",
       typeSpeed: 70,
